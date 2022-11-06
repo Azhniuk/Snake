@@ -3,14 +3,16 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Random;
+
+
 public class Panel extends JPanel implements ActionListener{
+
     static final int S_Width=1200;
     static final int S_Height=600;
     static final int Game_unit_size=50;
     Timer timer;
     Random random;
-    int foodEAten;
-    int foodX;
+    int foodEAten, foodX;
     int foodY;
     int bodylength = 2;
     boolean game_flag = false;
