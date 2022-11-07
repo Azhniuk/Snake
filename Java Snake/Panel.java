@@ -9,16 +9,21 @@ public class Panel extends JPanel implements ActionListener{
 
     //initialization of variables
 
-    static final int S_Width=1200, S_Height=600, Game_unit_size=50;
+    static final int S_Width=1000, S_Height=600, Game_unit_size=64;
     Timer timer;
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
-    boolean game_flag = false;
-    char dir = 'D';
+    boolean gameCont = false;           //continue
+    static final int DELAY = 180;       //speed
+
+
+
+
+
 
 
     //!!!!!!!!!
-    static final int DELAY = 160;
+    char dir = 'D';    
     static final int G_Size=(S_Width*S_Height)/(Game_unit_size*Game_unit_size);
     final int x_snake[]=new int[G_Size], y_snake[]=new int[G_Size];
 ///
@@ -27,24 +32,35 @@ public class Panel extends JPanel implements ActionListener{
 
     Panel(){
         this.setPreferredSize(new Dimension(S_Width,S_Height));
-        this.setBackground(Color.blue);
+        this.setBackground(Color.lightGray);
         this.setFocusable(true);
-        this.addKeyListener(new MyKey());
+        this.addKeyListener(new Keyboard());
+
         random = new Random();
         Game_start();
     }
-    public void Game_start() {
-        newfoodPosition();
-        game_flag=true;
-        timer=new Timer(DELAY,this);
+
+
+    //Main constructors
+    public void Game_start() {                        //start
+        newFoodPosition();        
+        gameCont=true;
+        timer=new Timer(DELAY, this);
         timer.start();
     }
-    public void paintComponent(Graphics graphic) {
+
+    public void paintComponent(Graphics graphic) {  //Call draw
         super.paintComponent(graphic);
         draw(graphic);
     }
+
+
+    ////* */
+
+   
+
     public void draw(Graphics graphic) {
-        if(game_flag){
+        if(gameCont){
             graphic.setColor(Color.yellow);
             graphic.fillOval(foodX, foodY,Game_unit_size,Game_unit_size);
             for(int i=0;i<bodylength;i++){
@@ -86,31 +102,37 @@ public class Panel extends JPanel implements ActionListener{
                 break;
         }
     }
-    public void newfoodPosition() {// for displaying food at a random position on the screen
+
+
+
+    //additional constructors 
+
+    public void newFoodPosition() {
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
     }
+
     public void food_EatenOrNot() {// for checking the food has been eaten by snake or not
         if((x_snake[0]==foodX)&&(y_snake[0]==foodY)){
             bodylength++;
             foodEaten++;
-            newfoodPosition();
+            newFoodPosition();
         }
     }
     public void checkHit() {
 // for checking if by mistake snake bite itself and if it collides with walls
         for (int i=bodylength;i>0;i--)
             {if((x_snake[0]==x_snake[i])&&(y_snake[0]==y_snake[i]))
-                {game_flag=false;}}
+                {gameCont=false;}}
         if(x_snake[0]<0)
-            {game_flag=false;}
+            {gameCont=false;}
         if(x_snake[0]>S_Width)
-           { game_flag=false;}
+           { gameCont=false;}
         if (y_snake[0] < 0) 
-        {    game_flag = false;}
+        {    gameCont = false;}
         if (y_snake[0] > S_Height) 
-        {    game_flag = false;}
-        if(!game_flag)
+        {    gameCont = false;}
+        if(!gameCont)
           {  timer.stop();}
     }
     public void gameOver(Graphics graphic) {// When ever game is over this function will be called.
@@ -129,7 +151,7 @@ public class Panel extends JPanel implements ActionListener{
         FontMetrics font_me3 = getFontMetrics(graphic.getFont());
         graphic.drawString("Press R to Replay", (S_Width - font_me3.stringWidth("Press R to Replay")) / 2, S_Height / 2-150);
     }
-    public class MyKey extends KeyAdapter{
+    public class Keyboard extends KeyAdapter{
         @Override
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
@@ -154,7 +176,7 @@ public class Panel extends JPanel implements ActionListener{
                     }
                     break;
                 case KeyEvent.VK_R:
-                if(!game_flag){
+                if(!gameCont){
                     foodEaten=0;
                     bodylength=2;
                     dir='R';
@@ -169,7 +191,7 @@ public class Panel extends JPanel implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        if (game_flag) {
+        if (gameCont) {
             move();
             food_EatenOrNot();
             checkHit();
