@@ -9,14 +9,12 @@ public class Panel extends JPanel implements ActionListener{
 
     //initialization of variables
 
-    static final int S_Width=1000, S_Height=600, Game_unit_size=64; // радіус
+    static final int S_Width=1000, S_Height=600, Game_unit_size=30; // радіус
     Timer timer;
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
     boolean gameCont = false;           //continue
     static final int DELAY = 180;       //speed
-
-
 
 
 
@@ -73,8 +71,10 @@ public class Panel extends JPanel implements ActionListener{
             }
 
 
-           graphic.setColor(Color.blue);
-           graphic.setFont(new Font("Ink Free",Font.BOLD,40));
+            
+
+           graphic.setColor(Color.black);
+           graphic.setFont(new Font("Courier", Font.PLAIN, 35));
            FontMetrics font_me=getFontMetrics(graphic.getFont());
            graphic.drawString("Score:"+foodEaten,(S_Width-font_me.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize());
         }
@@ -83,7 +83,7 @@ public class Panel extends JPanel implements ActionListener{
             gameOver(graphic);
         }
     }
-    
+
 
     public void move() {
         for(int i=bodylength;i>0;i--){
@@ -140,17 +140,16 @@ public class Panel extends JPanel implements ActionListener{
     }
     public void gameOver(Graphics graphic) {// When ever game is over this function will be called.
         graphic.setColor(Color.red);
-        graphic.setFont(new Font("Ink Free", Font.BOLD, 40));
+        graphic.setFont(new Font("Courier", Font.PLAIN, 35));
         FontMetrics font_me = getFontMetrics(graphic.getFont());
         graphic.drawString("Score:" + foodEaten, (S_Width - font_me.stringWidth("Score:" + foodEaten)) / 2,
                 graphic.getFont().getSize());
         graphic.setColor(Color.red);
-        graphic.setFont(new Font("Ink Free", Font.BOLD, 75));
+        graphic.setFont(new Font("Courier", Font.BOLD, 75));
         FontMetrics font_me2 = getFontMetrics(graphic.getFont());
-        graphic.drawString("Game Over", (S_Width - font_me2.stringWidth("Game Over")) / 2,
-                S_Height/2);
+        graphic.drawString("Game Over", (S_Width - font_me2.stringWidth("Game Over")) / 2, S_Height/2);
                 graphic.setColor(Color.red);
-        graphic.setFont(new Font("Ink Free", Font.BOLD, 40));
+        graphic.setFont(new Font("Courier", Font.PLAIN, 35));
         FontMetrics font_me3 = getFontMetrics(graphic.getFont());
         graphic.drawString("Press R to Replay", (S_Width - font_me3.stringWidth("Press R to Replay")) / 2, S_Height / 2-150);
     }
