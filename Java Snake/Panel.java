@@ -11,7 +11,7 @@ public class Panel extends JPanel implements ActionListener{
     //initialization of variables
 
     static final int S_Width=1000, S_Height=600, Game_unit_size=30; // радіус
-    public ConcurrentHashMap<String, Object> map; //map for walls
+    public ConcurrentHashMap<String, Object[]> map; //map for walls
     Timer timer;
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
@@ -56,11 +56,6 @@ public class Panel extends JPanel implements ActionListener{
         super.paintComponent(graphic);
         draw(graphic);
     }
-
-    public void paintWall(Graphics graphic){
-
-    }
-   
 
     public void draw(Graphics graphic) {
         if(gameCont){
@@ -127,6 +122,40 @@ public class Panel extends JPanel implements ActionListener{
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
     }
+
+    
+    public void paintWall(Graphics graphic){
+        int size = map.size();
+        size ++;
+        
+
+        //int wallTimer = 1 + random.nextInt(40);
+        int wallTimer = 4;
+
+
+        if(wallTimer == 4){
+            //generate 1 obstacle
+            int x = 1 + random.nextInt(600);
+            int y = 1 + random.nextInt(600);
+
+            Object wallArray = new Object(x, y);
+
+            //new wallArray<Int> [];
+        }
+
+        else if(wallTimer == 10){
+            //generate 2 obstacles
+        }
+
+        else if(wallTimer == 30){
+            //delete 1 obstacle
+        }
+      
+
+
+
+    }
+   
 
     public void food_EatenOrNot() {// for checking the food has been eaten by snake or not
         if((x_snake[0]==foodX)&&(y_snake[0]==foodY)){
@@ -204,6 +233,7 @@ public class Panel extends JPanel implements ActionListener{
         }
     }
     
+
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (gameCont) {
