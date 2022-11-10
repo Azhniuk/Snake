@@ -16,7 +16,9 @@ public class Panel extends JPanel implements ActionListener{
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
     boolean gameCont = false;           //continue
-    static final int DELAY = 180;       //speed
+    int DELAY = 180;                    //speed
+    int x, y;
+
     
 
 
@@ -25,7 +27,9 @@ public class Panel extends JPanel implements ActionListener{
     //!!!!!!!!!
     char dir = 'D';    
     static final int G_Size=(S_Width*S_Height)/(Game_unit_size*Game_unit_size);
-    final int x_snake[]=new int[G_Size], y_snake[]=new int[G_Size];
+    final int 
+    x_snake[]=new int[G_Size], 
+    y_snake[]=new int[G_Size];
 ///
 
 
@@ -43,12 +47,11 @@ public class Panel extends JPanel implements ActionListener{
 
     //Main constructors
     public void Game_start() {                        //start
-        newFoodPosition();        
+        newFoodPosition();  
+        drawWall();      
         gameCont=true;
         timer=new Timer(DELAY, this);
         timer.start();
-
-        map = new ConcurrentHashMap();
 
     }
 
@@ -75,15 +78,19 @@ public class Panel extends JPanel implements ActionListener{
                 }
             }
 
-            //wall
-            graphic.setColor(new Color(153, 102, 0));
-            graphic.fillRect(10 , 10 ,Game_unit_size,Game_unit_size);
+            
 
             //Score
             graphic.setColor(Color.black);
             graphic.setFont(new Font("Courier", Font.PLAIN, 35));
             FontMetrics font_me=getFontMetrics(graphic.getFont());
             graphic.drawString("Score:"+foodEaten,(S_Width-font_me.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize());
+
+
+
+            //Wall
+            graphic.setColor(new Color(153, 102, 0));
+            graphic.fillRect(x , y ,Game_unit_size,Game_unit_size);
         }
 
         else{
@@ -124,34 +131,28 @@ public class Panel extends JPanel implements ActionListener{
     }
 
     
-    public void paintWall(Graphics graphic){
-        int size = map.size();
-        size ++;
-        
+    public void drawWall(){     
+        //int wallRandom = 1 + random.nextInt(40);
+        int wallRandom = 4;
 
-        //int wallTimer = 1 + random.nextInt(40);
-        int wallTimer = 4;
-
-
-        if(wallTimer == 4){
+        if(wallRandom == 4){
             //generate 1 obstacle
-            int x = 1 + random.nextInt(600);
-            int y = 1 + random.nextInt(600);
+            x = 1 + random.nextInt(600);
+            y = 1 + random.nextInt(600);
 
-            Object wallArray = new Object(x, y);
+          //  object wallA = new object();
+           // object[] wallAArr = {wallA};
 
-            //new wallArray<Int> [];
+            //new wallArray<Int> [];''
         }
 
-        else if(wallTimer == 10){
+        else if(wallRandom == 10){
             //generate 2 obstacles
         }
 
-        else if(wallTimer == 30){
+        else if(wallRandom == 30){
             //delete 1 obstacle
         }
-      
-
 
 
     }
@@ -234,6 +235,8 @@ public class Panel extends JPanel implements ActionListener{
     }
     
 
+
+
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (gameCont) {
@@ -243,5 +246,17 @@ public class Panel extends JPanel implements ActionListener{
         }
         repaint();
     }
+
+
+    new java.util.Timer().schedule( new java.util.TimerTask() {
+            @Override
+            public void run() {
+                
+            }
+        }, 
+        5000 );
+    }
+
     
-}
+
+
