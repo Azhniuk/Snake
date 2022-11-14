@@ -10,9 +10,14 @@ public class Panel extends JPanel implements ActionListener{
 
     //initialization of variables
 
+<<<<<<< HEAD
     static final int S_Width = 1000, S_Height = 600;
     int Game_unit_size = 30; 
     public ConcurrentHashMap<String, Object[]> map; //map for walls
+=======
+    static final int S_Width=1000, S_Height=600, Game_unit_size=30; // радіус
+    public ConcurrentHashMap<String, Object> map; //map for walls
+>>>>>>> parent of feac71a (Final)
     Timer timer;
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
@@ -60,6 +65,11 @@ public class Panel extends JPanel implements ActionListener{
         super.paintComponent(graphic);
         draw(graphic);
     }
+
+    public void paintWall(Graphics graphic){
+
+    }
+   
 
     public void draw(Graphics graphic) {
         if(gameCont){
@@ -131,6 +141,7 @@ public class Panel extends JPanel implements ActionListener{
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
     }
 
+<<<<<<< HEAD
     
     public void drawWall(){     
         //int wallRandom = 1 + random.nextInt(40);
@@ -159,6 +170,8 @@ public class Panel extends JPanel implements ActionListener{
     }
    
 
+=======
+>>>>>>> parent of feac71a (Final)
     public void food_EatenOrNot() {// for checking the food has been eaten by snake or not
         if((x_snake[0]==foodX)&&(y_snake[0]==foodY)){
             bodylength++;
@@ -235,9 +248,12 @@ public class Panel extends JPanel implements ActionListener{
         }
     }
     
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> parent of feac71a (Final)
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (gameCont) {
