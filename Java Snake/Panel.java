@@ -10,7 +10,8 @@ public class Panel extends JPanel implements ActionListener{
 
     //initialization of variables
 
-    static final int S_Width=1000, S_Height=600, Game_unit_size=30; // радіус
+    static final int S_Width = 1000, S_Height = 600;
+    int Game_unit_size = 30; 
     public ConcurrentHashMap<String, Object[]> map; //map for walls
     Timer timer;
     Random random;
