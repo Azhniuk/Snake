@@ -247,16 +247,7 @@ public class Panel extends JPanel implements ActionListener{
         repaint();
     }
 
-
-    new java.util.Timer().schedule( new java.util.TimerTask() {
-            @Override
-            public void run() {
-                
-            }
-        }, 
-        5000 );
-    }
-
+}
     
 
 
