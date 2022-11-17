@@ -12,13 +12,12 @@ public class Panel extends JPanel implements ActionListener{
     //initialization of variables
     static final int S_Width = 1000, S_Height = 600, Game_unit_size = 30; 
 
-   // public ConcurrentHashMap<String, Object[]> map; //map for walls
     Timer timer;
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
     boolean gameCont = false;           //not continue
     int x, y, DELAY;
-    char dir = 'D';   // go right
+    char dir = 'R';   // go right
 
     
 
@@ -26,6 +25,8 @@ public class Panel extends JPanel implements ActionListener{
     final int 
     x_snake[]=new int[G_Size], 
     y_snake[]=new int[G_Size];      // snake position when the game starts
+
+    float speedCoef = 1.0f;
 
 
 
@@ -36,17 +37,17 @@ public class Panel extends JPanel implements ActionListener{
         this.setFocusable(true);
         this.addKeyListener(new Keyboard());
         random = new Random();
-        Game_start();
+        GameStart();
     }
 
 
     //Main constructors
-    public void Game_start() {               //start
-        DELAY = 200;                          //speed
+    public void GameStart() {               //start
+        DELAY = 280;                          //speed
         newFoodPosition();
         newWallPosition(); 
-        gameCont=true;
-        timer=new Timer(DELAY, this);
+        gameCont = true;
+        timer = new Timer(DELAY, this);
         timer.start();
 
     }
@@ -87,8 +88,6 @@ public class Panel extends JPanel implements ActionListener{
             FontMetrics font_me=getFontMetrics(graphic.getFont());
             graphic.drawString("Score:"+foodEaten,(S_Width-font_me.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize());
 
-               
-
             
         }
 
@@ -100,13 +99,13 @@ public class Panel extends JPanel implements ActionListener{
     
     //Move
     public void move() {
-        for(int i = bodylength;i > 0; i--){
+        for(int i = bodylength; i > 0; i--){
             x_snake[i]=x_snake[i-1];
             y_snake[i]=y_snake[i-1];
         }
         switch (dir) {
             case 'U':
-            y_snake[0]=y_snake[0]-Game_unit_size;
+            y_snake[0]=y_snake[0] - Game_unit_size;
                 break;
             case 'L':
                 x_snake[0] = x_snake[0] - Game_unit_size;
@@ -127,8 +126,6 @@ public class Panel extends JPanel implements ActionListener{
     public void newFoodPosition() {
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
-        DELAY =   DELAY - 37;
-        timer = new Timer(DELAY, this);
     }
 
     public void newWallPosition() {
@@ -164,19 +161,23 @@ public class Panel extends JPanel implements ActionListener{
 
     public void gameOver(Graphics graphic) {    // When ever game is over 
         graphic.setColor(Color.red);
+
+        //1
         graphic.setFont(new Font("Courier", Font.PLAIN, 35));
         FontMetrics font_me = getFontMetrics(graphic.getFont());
-        graphic.drawString("Score:" + foodEaten, (S_Width - font_me.stringWidth("Score:" + foodEaten)) / 2,
-                graphic.getFont().getSize());
-        graphic.setColor(Color.red);
-        graphic.setFont(new Font("Courier", Font.BOLD, 75));
-        FontMetrics font_me2 = getFontMetrics(graphic.getFont());
-        graphic.drawString("Game Over", (S_Width - font_me2.stringWidth("Game Over")) / 2, S_Height/2);
-                graphic.setColor(Color.red);
+        graphic.drawString("Score:" + foodEaten, (S_Width - font_me.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
+        
+        //2
         graphic.setFont(new Font("Courier", Font.PLAIN, 35));
-        FontMetrics font_me3 = getFontMetrics(graphic.getFont());
-        graphic.drawString("Press R to Replay", (S_Width - font_me3.stringWidth("Press R to Replay")) / 2, S_Height / 2-150);
-    }
+        graphic.drawString("Press R to Replay", (S_Width - font_me.stringWidth("Press R to Replay")) / 2, S_Height / 2 - 150);  
+
+        graphic.setFont(new Font("Courier", Font.BOLD, 75));
+        FontMetrics font_me1 = getFontMetrics(graphic.getFont());
+        graphic.drawString("Game Over", (S_Width - font_me1.stringWidth("Game Over")) / 2, S_Height/2);
+
+
+        timer.stop();
+        }
 
 
     //action listener 
@@ -209,8 +210,7 @@ public class Panel extends JPanel implements ActionListener{
                     dir='R';
                     Arrays.fill(x_snake,0);
                     Arrays.fill(y_snake,0);
-                    DELAY = 200;  
-                    Game_start();
+                    GameStart();
                 }
                 break;
             }            
@@ -218,7 +218,7 @@ public class Panel extends JPanel implements ActionListener{
     }
     
     @Override
-    public void actionPerformed(ActionEvent arg0) {
+    public void actionPerformed(ActionEvent a) {
         if (gameCont) {
             move();
             food_EatenOrNot();
