@@ -17,8 +17,7 @@ public class Panel extends JPanel implements ActionListener{
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
     boolean gameCont = false;           //not continue
-    int DELAY = 190;                    //speed
-    int x, y;
+    int x, y, DELAY;
     char dir = 'D';   // go right
 
     
@@ -27,7 +26,7 @@ public class Panel extends JPanel implements ActionListener{
     final int 
     x_snake[]=new int[G_Size], 
     y_snake[]=new int[G_Size];      // snake position when the game starts
-///
+
 
 
 
@@ -36,17 +35,16 @@ public class Panel extends JPanel implements ActionListener{
         this.setBackground(Color.lightGray);
         this.setFocusable(true);
         this.addKeyListener(new Keyboard());
-
         random = new Random();
         Game_start();
     }
 
 
     //Main constructors
-    public void Game_start() {                        //start
+    public void Game_start() {               //start
+        DELAY = 190;                          //speed
         newFoodPosition(); 
-        newWallPosition(); 
-       // drawWall();      
+        newWallPosition();       
         gameCont=true;
         timer=new Timer(DELAY, this);
         timer.start();
@@ -89,10 +87,12 @@ public class Panel extends JPanel implements ActionListener{
             FontMetrics font_me=getFontMetrics(graphic.getFont());
             graphic.drawString("Score:"+foodEaten,(S_Width-font_me.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize());
 
+             //Wall
+             graphic.setColor(new Color(153, 102, 0));
+             graphic.fillRect(x , y ,Game_unit_size,Game_unit_size);
 
-            //Wall
-            graphic.setColor(new Color(153, 102, 0));
-            graphic.fillRect(x , y ,Game_unit_size,Game_unit_size);
+
+           
 
             
         }
@@ -132,6 +132,8 @@ public class Panel extends JPanel implements ActionListener{
     public void newFoodPosition() {
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
+        DELAY =   DELAY - 25;
+        timer = new Timer(DELAY, this);
 
         
     }
