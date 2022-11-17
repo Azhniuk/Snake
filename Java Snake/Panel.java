@@ -3,8 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Random;
-
-//import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 
 
 public class Panel extends JPanel implements ActionListener{
@@ -16,7 +15,7 @@ public class Panel extends JPanel implements ActionListener{
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
     boolean gameCont = false;           //not continue
-    int x, x1, x2, y, y1, y2, DELAY, additional;
+    int x, x1, x2, y, y1, y2, DELAY, additional, k = 1;
     char dir = 'R';   // go right
 
     
@@ -26,7 +25,8 @@ public class Panel extends JPanel implements ActionListener{
     x_snake[]=new int[G_Size], 
     y_snake[]=new int[G_Size];      // snake position when the game starts
 
-    float speedCoef = 1.0f;
+    ArrayList<String> walls = new ArrayList<String>(); // Create an ArrayList for walls
+
 
 
 
@@ -66,15 +66,18 @@ public class Panel extends JPanel implements ActionListener{
             graphic.fillOval(foodX, foodY,Game_unit_size,Game_unit_size);
 
             //Wall
-            graphic.setColor(new Color(153, 102, 0));
-            graphic.fillRect(x, y, Game_unit_size, Game_unit_size);
-            if(x1 > 0){
-                graphic.fillRect(x1, y1, Game_unit_size, Game_unit_size);
-            }
-            else if(x2 > 0){
-                graphic.fillRect(x1, y1, Game_unit_size, Game_unit_size);
-                graphic.fillRect(x2, y2, Game_unit_size, Game_unit_size);
-            }
+            
+                graphic.setColor(new Color(153, 102, 0));
+                graphic.fillRect(x, y, Game_unit_size, Game_unit_size);
+                if(x1 > 0){
+                    graphic.fillRect(x1, y1, Game_unit_size, Game_unit_size);
+                }
+                else if(x2 > 0){
+                    graphic.fillRect(x1, y1, Game_unit_size, Game_unit_size);
+                    graphic.fillRect(x2, y2, Game_unit_size, Game_unit_size);
+                 }
+
+             
             
 
 
@@ -139,6 +142,8 @@ public class Panel extends JPanel implements ActionListener{
     }
 
     public void newWallPosition() {
+
+        if (k%3 == 0){
         //additional = random.nextInt(1, 4);
         additional = 2;
         if(additional == 1){
@@ -160,6 +165,13 @@ public class Panel extends JPanel implements ActionListener{
             y1 = 0;
             y2 = 0;
             }
+            k++;
+
+        }
+        else{
+            k++;
+        }
+        
         }
         
 
