@@ -42,9 +42,9 @@ public class Panel extends JPanel implements ActionListener{
 
     //Main constructors
     public void Game_start() {               //start
-        DELAY = 190;                          //speed
-        newFoodPosition(); 
-        newWallPosition();       
+        DELAY = 200;                          //speed
+        newFoodPosition();
+        newWallPosition(); 
         gameCont=true;
         timer=new Timer(DELAY, this);
         timer.start();
@@ -56,16 +56,15 @@ public class Panel extends JPanel implements ActionListener{
         draw(graphic);
     }
 
-    public void paintWall(Graphics graphic){
-
-    }
-   
 
     public void draw(Graphics graphic) {
         if(gameCont){
             //apple
             graphic.setColor(Color.red);
             graphic.fillOval(foodX, foodY,Game_unit_size,Game_unit_size);
+
+            graphic.setColor(new Color(153, 102, 0));
+            graphic.fillRect(x , y ,Game_unit_size,Game_unit_size);
 
             //snake
             for(int i=0; i<bodylength; i++){  
@@ -88,8 +87,8 @@ public class Panel extends JPanel implements ActionListener{
             graphic.drawString("Score:"+foodEaten,(S_Width-font_me.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize());
 
              //Wall
-             graphic.setColor(new Color(153, 102, 0));
-             graphic.fillRect(x , y ,Game_unit_size,Game_unit_size);
+            // graphic.setColor(new Color(153, 102, 0));
+            // graphic.fillRect(x , y ,Game_unit_size,Game_unit_size);
 
 
            
@@ -132,17 +131,13 @@ public class Panel extends JPanel implements ActionListener{
     public void newFoodPosition() {
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
-        DELAY =   DELAY - 25;
+        DELAY =   DELAY - 50;
         timer = new Timer(DELAY, this);
-
-        
     }
 
     public void newWallPosition() {
         x =random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
-        y =random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
-
-        
+        y =random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;        
     }
 
     public void food_EatenOrNot() {     // for checking the food has been eaten by snake or not
@@ -150,6 +145,7 @@ public class Panel extends JPanel implements ActionListener{
             bodylength++;
             foodEaten++;
             newFoodPosition();
+            newWallPosition();
         }
     }
 
