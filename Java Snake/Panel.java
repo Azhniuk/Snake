@@ -15,7 +15,7 @@ public class Panel extends JPanel implements ActionListener{
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
     boolean gameCont = false;           //not continue
-    int x, x1, x2, y, y1, y2, DELAY, additional, k = 1;
+    int x, y, x1, y1, x2, y2, DELAY, additional, k = 1;
     char dir = 'R';   // go right
 
     
@@ -25,7 +25,7 @@ public class Panel extends JPanel implements ActionListener{
     x_snake[]=new int[G_Size], 
     y_snake[]=new int[G_Size];      // snake position when the game starts
 
-    ArrayList<String> walls = new ArrayList<String>(); // Create an ArrayList for walls
+    ArrayList<Integer> walls = new ArrayList<Integer>(); // Create an ArrayList for walls
 
 
 
@@ -69,13 +69,6 @@ public class Panel extends JPanel implements ActionListener{
             
                 graphic.setColor(new Color(153, 102, 0));
                 graphic.fillRect(x, y, Game_unit_size, Game_unit_size);
-                if(x1 > 0){
-                    graphic.fillRect(x1, y1, Game_unit_size, Game_unit_size);
-                }
-                else if(x2 > 0){
-                    graphic.fillRect(x1, y1, Game_unit_size, Game_unit_size);
-                    graphic.fillRect(x2, y2, Game_unit_size, Game_unit_size);
-                 }
 
              
             
@@ -143,18 +136,24 @@ public class Panel extends JPanel implements ActionListener{
 
     public void newWallPosition() {
 
-        if (k%3 == 0){
-        //additional = random.nextInt(1, 4);
-        additional = 2;
-        if(additional == 1){
-            // create 1
-            x =random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
-            y =random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
-            x1 = 0; 
-            x2 = 0; 
-            y1 = 0;
-            y2 = 0;
-        }
+
+
+        x = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
+        y = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
+        x1 = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
+        y1 = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
+        x2 = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
+        y2 = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
+
+        walls.add(x);
+
+
+
+
+
+            
+
+        /* 
 
         else if(additional == 2){
             //create 2
@@ -171,7 +170,7 @@ public class Panel extends JPanel implements ActionListener{
         else{
             k++;
         }
-        
+        */
         }
         
 
