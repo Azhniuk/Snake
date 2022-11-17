@@ -16,7 +16,7 @@ public class Panel extends JPanel implements ActionListener{
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
     boolean gameCont = false;           //not continue
-    int x, y, DELAY;
+    int x, x1, x2, y, y1, y2, DELAY, additional;
     char dir = 'R';   // go right
 
     
@@ -43,7 +43,7 @@ public class Panel extends JPanel implements ActionListener{
 
     //Main constructors
     public void GameStart() {               //start
-        DELAY = 280;                          //speed
+        DELAY = 170;                          //speed
         newFoodPosition();
         newWallPosition(); 
         gameCont = true;
@@ -58,6 +58,7 @@ public class Panel extends JPanel implements ActionListener{
     }
 
 
+    //GRAPHICS
     public void draw(Graphics graphic) {
         if(gameCont){
             //apple
@@ -66,7 +67,16 @@ public class Panel extends JPanel implements ActionListener{
 
             //Wall
             graphic.setColor(new Color(153, 102, 0));
-            graphic.fillRect(x , y ,Game_unit_size,Game_unit_size);
+            graphic.fillRect(x, y, Game_unit_size, Game_unit_size);
+            if(x1 > 0){
+                graphic.fillRect(x1, y1, Game_unit_size, Game_unit_size);
+            }
+            else if(x2 > 0){
+                graphic.fillRect(x1, y1, Game_unit_size, Game_unit_size);
+                graphic.fillRect(x2, y2, Game_unit_size, Game_unit_size);
+            }
+            
+
 
             //snake
             for(int i=0; i<bodylength; i++){  
@@ -129,9 +139,33 @@ public class Panel extends JPanel implements ActionListener{
     }
 
     public void newWallPosition() {
-        x =random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
-        y =random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;        
-    }
+        //additional = random.nextInt(1, 4);
+        additional = 2;
+        if(additional == 1){
+            // create 1
+            x =random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
+            y =random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
+            x1 = 0; 
+            x2 = 0; 
+            y1 = 0;
+            y2 = 0;
+        }
+
+        else if(additional == 2){
+            //create 2
+            x = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
+            y = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
+            x1 = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
+            y1 = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
+            y1 = 0;
+            y2 = 0;
+            }
+        }
+        
+
+
+               
+    
 
     public void food_EatenOrNot() {     // for checking the food has been eaten by snake or not
         if((x_snake[0]==foodX)&&(y_snake[0]==foodY)){
@@ -168,9 +202,9 @@ public class Panel extends JPanel implements ActionListener{
         graphic.drawString("Score:" + foodEaten, (S_Width - font_me.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
         
         //2
-        graphic.setFont(new Font("Courier", Font.PLAIN, 35));
         graphic.drawString("Press R to Replay", (S_Width - font_me.stringWidth("Press R to Replay")) / 2, S_Height / 2 - 150);  
 
+        //3
         graphic.setFont(new Font("Courier", Font.BOLD, 75));
         FontMetrics font_me1 = getFontMetrics(graphic.getFont());
         graphic.drawString("Game Over", (S_Width - font_me1.stringWidth("Game Over")) / 2, S_Height/2);
