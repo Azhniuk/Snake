@@ -63,6 +63,7 @@ public class Panel extends JPanel implements ActionListener{
             graphic.setColor(Color.red);
             graphic.fillOval(foodX, foodY,Game_unit_size,Game_unit_size);
 
+            //Wall
             graphic.setColor(new Color(153, 102, 0));
             graphic.fillRect(x , y ,Game_unit_size,Game_unit_size);
 
@@ -86,12 +87,7 @@ public class Panel extends JPanel implements ActionListener{
             FontMetrics font_me=getFontMetrics(graphic.getFont());
             graphic.drawString("Score:"+foodEaten,(S_Width-font_me.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize());
 
-             //Wall
-            // graphic.setColor(new Color(153, 102, 0));
-            // graphic.fillRect(x , y ,Game_unit_size,Game_unit_size);
-
-
-           
+               
 
             
         }
@@ -131,7 +127,7 @@ public class Panel extends JPanel implements ActionListener{
     public void newFoodPosition() {
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
-        DELAY =   DELAY - 50;
+        DELAY =   DELAY - 37;
         timer = new Timer(DELAY, this);
     }
 
@@ -150,7 +146,7 @@ public class Panel extends JPanel implements ActionListener{
     }
 
     public void checkHit() { // if snake bite itself and if it collides with walls
-        for (int i = bodylength;i > 0;i--)
+        for (int i = bodylength;i > 0; i--)
             {if((x_snake[0]==x_snake[i])&&(y_snake[0]==y_snake[i]))
                 {gameCont=false;}}
         if(x_snake[0]<0)
@@ -182,19 +178,18 @@ public class Panel extends JPanel implements ActionListener{
         graphic.drawString("Press R to Replay", (S_Width - font_me3.stringWidth("Press R to Replay")) / 2, S_Height / 2-150);
     }
 
+
+    //action listener 
     public class Keyboard extends KeyAdapter{
         @Override
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
+        public void keyPressed(KeyEvent way) {
+            switch (way.getKeyCode()) {
+                //side to move
                 case KeyEvent.VK_LEFT:
-                    if(dir!='R'){
                         dir='L';
-                    }
                     break;
                 case KeyEvent.VK_UP:
-                    if (dir != 'D') {
                         dir = 'U';
-                    }
                     break;
                 case KeyEvent.VK_RIGHT:
                     if (dir != 'L') {
@@ -206,13 +201,15 @@ public class Panel extends JPanel implements ActionListener{
                         dir = 'D';
                     }
                     break;
+
                 case KeyEvent.VK_R:
                 if(!gameCont){
                     foodEaten=0;
                     bodylength=2;
                     dir='R';
-                   Arrays.fill(x_snake,0);
-                   Arrays.fill(y_snake,0);
+                    Arrays.fill(x_snake,0);
+                    Arrays.fill(y_snake,0);
+                    DELAY = 200;  
                     Game_start();
                 }
                 break;
