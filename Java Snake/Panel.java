@@ -66,10 +66,20 @@ public class Panel extends JPanel implements ActionListener{
             graphic.fillOval(foodX, foodY,Game_unit_size,Game_unit_size);
 
             //Wall
-            
-                graphic.setColor(new Color(153, 102, 0));
-                graphic.fillRect(x, y, Game_unit_size, Game_unit_size);
+            for (int i = 0; i < 3; i++){
+                System.out.println(walls.size());
 
+
+            }
+            
+            /* 
+                graphic.setColor(new Color(153, 102, 0));
+                graphic.fillRect(walls.get(0), walls.get(1), Game_unit_size, Game_unit_size);
+                k=k-1;
+                System.out.println(walls);
+            */
+            
+                
              
             
 
@@ -135,9 +145,6 @@ public class Panel extends JPanel implements ActionListener{
     }
 
     public void newWallPosition() {
-
-
-
         x = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         y = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
         x1 = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
@@ -146,10 +153,13 @@ public class Panel extends JPanel implements ActionListener{
         y2 = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
 
         walls.add(x);
+        walls.add(y);
+        walls.add(x1);
+        walls.add(y1);
+        walls.add(x2);
+        walls.add(y2); 
 
-
-
-
+        
 
             
 
