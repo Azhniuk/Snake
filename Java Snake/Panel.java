@@ -15,7 +15,7 @@ public class Panel extends JPanel implements ActionListener{
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
     boolean gameCont = false;           //not continue
-    int x, y, x1, y1, x2, y2, DELAY, additional, k = 1;
+    int x, y, x1, y1, x2, y2, DELAY, additional, wallSize = 2;
     char dir = 'R';   // go right
 
     
@@ -66,18 +66,10 @@ public class Panel extends JPanel implements ActionListener{
             graphic.fillOval(foodX, foodY,Game_unit_size,Game_unit_size);
 
             //Wall
-            for (int i = 0; i < 3; i++){
-                System.out.println(walls.size());
-
-
-            }
+            graphic.setColor(new Color(153, 102, 0));
+            graphic.fillRect(walls.get(0), walls.get(1), Game_unit_size, Game_unit_size);
+           // System.out.println(walls);
             
-            /* 
-                graphic.setColor(new Color(153, 102, 0));
-                graphic.fillRect(walls.get(0), walls.get(1), Game_unit_size, Game_unit_size);
-                k=k-1;
-                System.out.println(walls);
-            */
             
                 
              
@@ -136,8 +128,6 @@ public class Panel extends JPanel implements ActionListener{
     }
 
 
-
-
     //additional constructors 
     public void newFoodPosition() {
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
@@ -147,18 +137,19 @@ public class Panel extends JPanel implements ActionListener{
     public void newWallPosition() {
         x = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         y = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
-        x1 = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
+       /* x1 = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         y1 = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
         x2 = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         y2 = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
+        */
 
         walls.add(x);
         walls.add(y);
-        walls.add(x1);
+       /*  walls.add(x1);
         walls.add(y1);
         walls.add(x2);
         walls.add(y2); 
-
+*/
         
 
             
@@ -182,10 +173,7 @@ public class Panel extends JPanel implements ActionListener{
         }
         */
         }
-        
-
-
-               
+            
     
 
     public void food_EatenOrNot() {     // for checking the food has been eaten by snake or not
@@ -194,6 +182,11 @@ public class Panel extends JPanel implements ActionListener{
             foodEaten++;
             newFoodPosition();
             newWallPosition();
+            wallSize = walls.size();
+        
+            
+
+
         }
     }
 
