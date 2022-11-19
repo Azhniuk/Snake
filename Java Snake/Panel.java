@@ -66,9 +66,15 @@ public class Panel extends JPanel implements ActionListener{
             graphic.fillOval(foodX, foodY,Game_unit_size,Game_unit_size);
 
             //Wall
-            graphic.setColor(new Color(153, 102, 0));
-            graphic.fillRect(walls.get(0), walls.get(1), Game_unit_size, Game_unit_size);
-           // System.out.println(walls);
+            wallSize = wallSize / 2 ;
+
+            for (int i = 0; i <= wallSize; i++){
+                graphic.setColor(new Color(153, 102, 0));
+                graphic.fillRect(walls.get(i), walls.get(i+1), Game_unit_size, Game_unit_size);
+                if(i == wallSize-1){
+                    break;
+                }
+            }
             
             
                 
