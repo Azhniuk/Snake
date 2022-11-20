@@ -27,6 +27,8 @@ public class Panel extends JPanel implements ActionListener{
 
 
     ArrayList<Integer> walls = new ArrayList<Integer>(); // Create an ArrayList for walls
+
+
    
 
 
@@ -184,11 +186,12 @@ public class Panel extends JPanel implements ActionListener{
         
         //if it hits walls
         for (int i = 0; i <= wallSize; i=i+2){
-            if(x_snake[0]==walls.get(i) && y_snake[0]==walls.get(i+1))
+            if((x_snake[0]==walls.get(i)) && (y_snake[0]==walls.get(i+1)))
             {    gameCont = false;}
             if(i == wallSize-2){
                 break;
             }
+            
         }
         
         if(!gameCont)
@@ -246,8 +249,6 @@ public class Panel extends JPanel implements ActionListener{
                     dir='R';
                     Arrays.fill(x_snake,0);
                     Arrays.fill(y_snake,0);
-                   // clear();
-
                     GameStart();
                 }
                 break;
