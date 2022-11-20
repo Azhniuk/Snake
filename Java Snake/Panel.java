@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Panel extends JPanel implements ActionListener{
 
     //initialization of variables
-    static final int S_Width = 1000, S_Height = 600, Game_unit_size = 30; 
+    static final int S_Width = 1000, S_Height = 600, Game_unit_size = 33; 
 
     Timer timer;
     Random random;
@@ -25,8 +25,9 @@ public class Panel extends JPanel implements ActionListener{
     x_snake[]=new int[G_Size], 
     y_snake[]=new int[G_Size];      // snake position when the game starts
 
-    ArrayList<Integer> walls = new ArrayList<Integer>(); // Create an ArrayList for walls
 
+    ArrayList<Integer> walls = new ArrayList<Integer>(); // Create an ArrayList for walls
+   
 
 
 
@@ -49,7 +50,6 @@ public class Panel extends JPanel implements ActionListener{
         gameCont = true;
         timer = new Timer(DELAY, this);
         timer.start();
-
     }
 
     public void paintComponent(Graphics graphic) {  //Call draw
@@ -60,7 +60,8 @@ public class Panel extends JPanel implements ActionListener{
 
     //GRAPHICS
     public void draw(Graphics graphic) {
-        if(gameCont){
+        if(gameCont){ 
+            
             //apple
             graphic.setColor(Color.red);
             graphic.fillOval(foodX, foodY,Game_unit_size,Game_unit_size);
@@ -70,6 +71,7 @@ public class Panel extends JPanel implements ActionListener{
                 graphic.setColor(new Color(153, 102, 0));
                 graphic.fillRect(walls.get(i), walls.get(i+1), Game_unit_size, Game_unit_size);
                 graphic.fillRect(walls.get(i+2), walls.get(i+3), Game_unit_size, Game_unit_size);
+                System.out.println(walls);
                 if(i == wallSize-4){
                     break;
                 }
@@ -100,10 +102,7 @@ public class Panel extends JPanel implements ActionListener{
         }
         else{
             gameOver(graphic);
-            clear();
-            newWallPosition();                           
-
-
+            
         }
     }
 
@@ -135,29 +134,25 @@ public class Panel extends JPanel implements ActionListener{
     public void newFoodPosition() {
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
+
     }
 
     public void clear(){
-        walls.removeAll(walls);
-
+        //walls.removeAll(walls);
+        walls = new ArrayList<Integer>();
+        
     }
     public void newWallPosition() {
         x = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         y = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
 
-        x1 = x+1;
+        x1 = x+Game_unit_size;
         y1 = y;
-       /* x1 = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
-        y1 = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
-        x2 = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
-        y2 = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size; 
-        */
 
         walls.add(x);
         walls.add(y);
         walls.add(x1);
         walls.add(y1);
-
         }
             
     
@@ -169,8 +164,7 @@ public class Panel extends JPanel implements ActionListener{
             newFoodPosition();
             newWallPosition();
             wallSize = walls.size();
-            
-
+    
         }
     }
 
@@ -252,6 +246,7 @@ public class Panel extends JPanel implements ActionListener{
                     dir='R';
                     Arrays.fill(x_snake,0);
                     Arrays.fill(y_snake,0);
+                   // clear();
 
                     GameStart();
                 }
