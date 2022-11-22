@@ -15,7 +15,7 @@ public class Panel extends JPanel implements ActionListener{
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
     boolean gameCont = false;           //not continue
-    int x, y, x1, y1, x2, y2, DELAY, additional;
+    int x, y, x1, y1, x2, y2, DELAY, additional, k;
     char dir = 'R';   // go right
 
     
@@ -68,17 +68,15 @@ public class Panel extends JPanel implements ActionListener{
             graphic.fillOval(foodX, foodY,Game_unit_size,Game_unit_size);
 
             //Wall
-            for (int i = 0; i <= walls.size(); i = i+4){
+            for (int i = 0; i < walls.size() - 1; i = i + 2){
                 graphic.setColor(new Color(153, 102, 0));
                 graphic.fillRect(walls.get(i), walls.get(i+1), Game_unit_size, Game_unit_size);
-                graphic.fillRect(walls.get(i+2), walls.get(i+3), Game_unit_size, Game_unit_size);
-                if(i == walls.size() - 4){
+                if(i == walls.size()-1){
                     break;
                 }
             }
             
-            
-                
+   
              
 
             //snake
@@ -139,7 +137,6 @@ public class Panel extends JPanel implements ActionListener{
 
     public void clear(){
         walls.removeAll(walls);
-        newWallPosition();
         
         //walls = new ArrayList<Integer>();
         
@@ -148,9 +145,35 @@ public class Panel extends JPanel implements ActionListener{
         x = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         y = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
         
+        additional = random.nextInt(1, 5);
 
-        x1 = x + Game_unit_size;
-        y1 = y;
+        if(additional == 1){ //add one horisontal
+            x1 = x + Game_unit_size;
+            y1 = y;
+        }
+        else if(additional == 2){ //add one vertical
+            x1 = x;
+            y1 = y + Game_unit_size;
+        }
+
+        else if(additional == 3 && walls.size() >= 8){ //delete 4   
+            walls.remove(walls.size());
+            walls.remove(walls.size() - 1);
+            walls.remove(walls.size() - 2);
+            walls.remove(walls.size() - 3);
+        }
+
+    
+        else { //add big one if not delete one
+            x1 = x;
+            y1 = y + Game_unit_size;
+            x2 = x;
+            y2 = y + 2*Game_unit_size;
+            walls.add(x2);
+            walls.add(y2);
+        }
+
+         
 
         walls.add(x);
         walls.add(y);
@@ -185,7 +208,7 @@ public class Panel extends JPanel implements ActionListener{
         
         //if it hits walls
         for (int i = 0; i <= walls.size(); i=i+2){
-            System.out.println(walls);
+            System.out.println(walls); //PRINTTT
             if((x_snake[0]==walls.get(i)) && (y_snake[0]==walls.get(i+1)))
             {    gameCont = false;}
             if(i == walls.size() - 2){
