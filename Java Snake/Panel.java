@@ -175,8 +175,7 @@ public class Panel extends JPanel implements ActionListener{
             y1 = y + Game_unit_size;
         }
 
-        else if((additional == 3 || additional == 4) && (walls.size() >= 8)) { //delete 4 
-            System.out.println("walls.get(walls.size()- 1)"); 
+        else if((additional == 3) && (walls.size() >= 8)) { //delete 4 points  
             clearWalls();
             return;
         }
@@ -226,7 +225,6 @@ public class Panel extends JPanel implements ActionListener{
         
         //if it hits walls
         for (int i = 0; i <= walls.size(); i=i+2){
-            System.out.println(walls); //PRINTTT
             if((x_snake[0]==walls.get(i)) && (y_snake[0]==walls.get(i+1)))
             {    gameCont = false;}
             if(i == walls.size() - 2){
