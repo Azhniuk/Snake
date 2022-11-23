@@ -38,7 +38,6 @@ public class Panel extends JPanel implements ActionListener{
 
 
     //Easy1 Classic2 Medium3 Expert4
-
     public void GameStartEasy() {  //start 1 Easy
         level = 1;
         delay = 140;
@@ -51,14 +50,11 @@ public class Panel extends JPanel implements ActionListener{
     public void GameStartClassic() {  //start 2 Classic
         level = 2;
         delay = 120;
-        newWallPosition();
         newFoodPosition();
         gameCont = true;
         timer = new Timer(delay, this::actionPerformed) ;
         timer.start();
     }
-    // MAIN CONSTRUCTORS
-
 
     public void GameStartMedium() {  //start 3 Medium
         level = 3;
@@ -80,13 +76,15 @@ public class Panel extends JPanel implements ActionListener{
         timer.start();
     }
 
+
+
+
+    //GRAPHICS
     public void paintComponent(Graphics graphic) {  //Call draw
         super.paintComponent(graphic);
         draw(graphic);
     }
 
-
-    //GRAPHICS
     public void draw(Graphics graphic) {
         if(gameCont){ 
             //apple
@@ -152,54 +150,22 @@ public class Panel extends JPanel implements ActionListener{
     }
 
 
-    //additional constructors 
+    //Main Constructors
     public void newFoodPosition() {
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
-        checkHitWall();
-        setInterval(delay);
-
-    }
-
-    public void setInterval(int delay) {
-        if (gameCont){
-            delay = delay / 2;
-            timer.setDelay(delay);
+        if (level == 2) {
+            setInterval(delay);
         }
-
-    }
-
-
-    public void clearArray(){
-        walls.removeAll(walls);        
-    }
-
-    public void clearWalls(){
-        int index = walls.size() - 1;
-        
-        walls.remove(index);
-        walls.remove(index - 1);
-        walls.remove(index - 2);
-        walls.remove(index - 3);  
-              
-    }
-    
-
-    public void checkHitWall(){
-        for (int i = 0; i < walls.size() - 1; i = i + 2){
-            if (foodX == walls.get(i) && foodY == walls.get(i + 1)){
-                newFoodPosition();
-            }
-            else{
-                break;
-            }
+        else if(level > 2){
+            checkHitWall();
         }
     }
 
     public void newWallPosition() {
         x = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         y = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
-        
+
         additional = random.nextInt(1, 5);
 
         if(additional == 1){  //add one horisontal
@@ -211,7 +177,7 @@ public class Panel extends JPanel implements ActionListener{
             y1 = y + Game_unit_size;
         }
 
-        else if((additional == 3) && (walls.size() >= 8)) { //delete 4 points  
+        else if((additional == 3) && (walls.size() >= 8)) { //delete 4 points
             clearWalls();
             return;
         }
@@ -239,8 +205,38 @@ public class Panel extends JPanel implements ActionListener{
         walls.add(y);
         walls.add(x1);
         walls.add(y1);
+    }
+
+
+
+    public void setInterval(int delay) {
+        if (gameCont){
+            if(level ==4){
+                delay = delay /2;
+            }
+            else{
+                delay = delay * (10 - level) / 10;
+            }
+            timer.setDelay(delay);
         }
-            
+
+    }
+
+// clear const
+    public void clearArray(){
+        walls.removeAll(walls);        
+    }
+    public void clearWalls(){
+        int index = walls.size() - 1;
+        
+        walls.remove(index);
+        walls.remove(index - 1);
+        walls.remove(index - 2);
+        walls.remove(index - 3);  
+              
+    }
+
+
     
 
     public void food_EatenOrNot() {     // for checking the food has been eaten by snake or not
@@ -248,10 +244,14 @@ public class Panel extends JPanel implements ActionListener{
             bodylength++;
             foodEaten++;
             newFoodPosition();
-            newWallPosition();
+            if (level > 2){
+                newWallPosition();
+            }
+
         }
     }
 
+    //Hit
     public void checkHit() { 
         // if snake bite itself and if it collides with walls
         for (int i = bodylength; i > 0; i--)
@@ -265,19 +265,33 @@ public class Panel extends JPanel implements ActionListener{
         {    gameCont = false;}
         if (y_snake[0] > S_Height) 
         {    gameCont = false;}
-        
-        //if it hits walls
-        for (int i = 0; i <= walls.size(); i=i+2){
-            if((x_snake[0]==walls.get(i)) && (y_snake[0]==walls.get(i+1)))
-            {    gameCont = false;}
-            if(i == walls.size() - 2){
-                break;
+
+
+        if(level > 2) {
+            //if it hits walls
+            for (int i = 0; i <= walls.size(); i = i + 2) {
+                if ((x_snake[0] == walls.get(i)) && (y_snake[0] == walls.get(i + 1))) {
+                    gameCont = false;
+                }
+                if (i == walls.size() - 2) {
+                    break;
+                }
             }
-            
         }
         
         if(!gameCont)
           {  timer.stop();
+        }
+    }
+
+    public void checkHitWall(){
+        for (int i = 0; i < walls.size() - 1; i = i + 2){
+            if (foodX == walls.get(i) && foodY == walls.get(i + 1)){
+                newFoodPosition();
+            }
+            else{
+                break;
+            }
         }
     }
 
@@ -288,12 +302,16 @@ public class Panel extends JPanel implements ActionListener{
         //1
         graphic.setFont(new Font("Courier", Font.PLAIN, 35));
         FontMetrics font_me = getFontMetrics(graphic.getFont());
+
         graphic.drawString("Score:" + foodEaten, (S_Width - font_me.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
         
-        //2
-        graphic.drawString("Press R to Replay", (S_Width - font_me.stringWidth("Press R to Replay")) / 2, S_Height / 2 - 150);  
+        //Levels
+        graphic.drawString("Level 1", (S_Width - font_me.stringWidth("Level 1")) / 2, S_Height/2);
 
-        //3
+        graphic.drawString("Level 2", (S_Width - font_me.stringWidth("Level 2")) / 2, S_Height/2);
+
+
+        //Game over
         graphic.setFont(new Font("Courier", Font.BOLD, 75));
         FontMetrics font_me1 = getFontMetrics(graphic.getFont());
         graphic.drawString("Game Over", (S_Width - font_me1.stringWidth("Game Over")) / 2, S_Height/2);
@@ -324,17 +342,6 @@ public class Panel extends JPanel implements ActionListener{
                     }
                     break;
 
-                case KeyEvent.VK_SPACE :
-                    if (!gameCont){
-                        foodEaten=0;
-                        bodylength=2;
-                        dir='R';
-                        Arrays.fill(x_snake,0);
-                        Arrays.fill(y_snake,0);
-                        clearArray();
-
-                    }
-                break;
 
                 case KeyEvent.VK_1 :   // 1 Easy
                     if (!gameCont){
