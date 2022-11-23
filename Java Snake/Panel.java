@@ -15,7 +15,7 @@ public class Panel extends JPanel implements ActionListener{
     Random random;
     int foodEaten, foodX, foodY, bodylength = 2;
     boolean gameCont = false;           //not continue
-    int x, y, x1, y1, x2, y2, DELAY, additional, k;
+    int x, y, x1, y1, x2, y2, delay = 100, additional, level, k;
     char dir = 'R';   // go right
 
 
@@ -37,16 +37,46 @@ public class Panel extends JPanel implements ActionListener{
     }
 
 
-    //Easy Classic Medium Expert
+    //Easy1 Classic2 Medium3 Expert4
 
+    public void GameStartEasy() {  //start 1 Easy
+        level = 1;
+        delay = 140;
+        newFoodPosition();
+        gameCont = true;
+        timer = new Timer(delay, this::actionPerformed) ;
+        timer.start();
+    }
 
+    public void GameStartClassic() {  //start 2 Classic
+        level = 2;
+        delay = 120;
+        newWallPosition();
+        newFoodPosition();
+        gameCont = true;
+        timer = new Timer(delay, this::actionPerformed) ;
+        timer.start();
+    }
     // MAIN CONSTRUCTORS
-    public void GameStartMedium() {  //start
-        DELAY = 100;
+
+
+    public void GameStartMedium() {  //start 3 Medium
+        level = 3;
+        delay = 120;
         newWallPosition();                           
         newFoodPosition();
         gameCont = true;
-        timer = new Timer(DELAY, this);
+        timer = new Timer(delay, this);
+        timer.start();
+    }
+
+    public void GameStartExpert() {  //start 4 Expert
+        level = 4;
+        delay = 110;
+        newWallPosition();
+        newFoodPosition();
+        gameCont = true;
+        timer = new Timer(delay, this);
         timer.start();
     }
 
@@ -127,8 +157,18 @@ public class Panel extends JPanel implements ActionListener{
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
         checkHitWall();
+        setInterval(delay);
 
     }
+
+    public void setInterval(int delay) {
+        if (gameCont){
+            delay = delay / 2;
+            timer.setDelay(delay);
+        }
+
+    }
+
 
     public void clearArray(){
         walls.removeAll(walls);        
@@ -292,9 +332,58 @@ public class Panel extends JPanel implements ActionListener{
                         Arrays.fill(x_snake,0);
                         Arrays.fill(y_snake,0);
                         clearArray();
-                        GameStartMedium();
+
                     }
                 break;
+
+                case KeyEvent.VK_1 :   // 1 Easy
+                    if (!gameCont){
+                        foodEaten=0;
+                        bodylength=2;
+                        dir='R';
+                        Arrays.fill(x_snake,0);
+                        Arrays.fill(y_snake,0);
+                        clearArray();
+                        GameStartEasy();
+                    }
+                    break;
+
+                case KeyEvent.VK_2 :   // 2 Classic
+                    if (!gameCont){
+                        foodEaten=0;
+                        bodylength=2;
+                        dir='R';
+                        Arrays.fill(x_snake,0);
+                        Arrays.fill(y_snake,0);
+                        clearArray();
+                        GameStartClassic();
+                    }
+                    break;
+
+                case KeyEvent.VK_3 :   // 3 Medium
+                    if (!gameCont){
+                        foodEaten=0;
+                        bodylength=2;
+                        dir='R';
+                        Arrays.fill(x_snake,0);
+                        Arrays.fill(y_snake,0);
+                        clearArray();
+                        GameStartMedium();
+                    }
+                    break;
+
+
+                case KeyEvent.VK_4 :   // 4 Expert
+                    if (!gameCont){
+                        foodEaten=0;
+                        bodylength=2;
+                        dir='R';
+                        Arrays.fill(x_snake,0);
+                        Arrays.fill(y_snake,0);
+                        clearArray();
+                        GameStartExpert();
+                    }
+                    break;
             }            
         }
     }
