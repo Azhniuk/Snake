@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.ArrayList;
 
-
 public class Panel extends JPanel implements ActionListener{
 
     //initialization of variables
@@ -13,17 +12,15 @@ public class Panel extends JPanel implements ActionListener{
 
     Timer timer;
     Random random;
-    int foodEaten, foodX, foodY, bodylength = 2;
-    boolean gameCont = false;           //not continue
-    int x, y, x1, y1, x2, y2, delay = 100, additional, level, k;
+    int foodEaten, foodX, foodY, bodylength;
+    boolean gameCont = false, firstGame = true;           //not continue
+    int x, y, x1, y1, x2, y2, delay = 100, additional, level;
     char dir = 'R';   // go right
 
 
     static final int G_Size=(S_Width*S_Height)/(Game_unit_size*Game_unit_size);  // dev into squares
     final int 
-    x_snake[]=new int[G_Size], 
-    y_snake[]=new int[G_Size];      // snake position when the game starts
-
+    x_snake[]=new int[G_Size], y_snake[]=new int[G_Size];      // snake position when the game starts
     ArrayList<Integer> walls = new ArrayList<Integer>(); // Create an ArrayList for walls
 
 
@@ -40,6 +37,7 @@ public class Panel extends JPanel implements ActionListener{
     //Easy1 Classic2 Medium3 Expert4
     public void GameStartEasy() {  //start 1 Easy
         level = 1;
+        firstGame = false;
         delay = 140;
         newFoodPosition();
         gameCont = true;
@@ -49,6 +47,7 @@ public class Panel extends JPanel implements ActionListener{
 
     public void GameStartClassic() {  //start 2 Classic
         level = 2;
+        firstGame = false;
         delay = 120;
         newFoodPosition();
         gameCont = true;
@@ -58,6 +57,7 @@ public class Panel extends JPanel implements ActionListener{
 
     public void GameStartMedium() {  //start 3 Medium
         level = 3;
+        firstGame = false;
         delay = 120;
         newWallPosition();                           
         newFoodPosition();
@@ -68,6 +68,7 @@ public class Panel extends JPanel implements ActionListener{
 
     public void GameStartExpert() {  //start 4 Expert
         level = 4;
+        firstGame = false;
         delay = 110;
         newWallPosition();
         newFoodPosition();
@@ -75,7 +76,6 @@ public class Panel extends JPanel implements ActionListener{
         timer = new Timer(delay, this);
         timer.start();
     }
-
 
 
 
@@ -296,27 +296,32 @@ public class Panel extends JPanel implements ActionListener{
     }
 
 
-    public void gameMenu(Graphics graphic) {    // When ever game is over 
-        graphic.setColor(Color.red);
+    public void gameMenu(Graphics graphic) {
+        graphic.setColor(Color.black);
 
-        //1
+        //Plain
         graphic.setFont(new Font("Courier", Font.PLAIN, 35));
-        FontMetrics font_me = getFontMetrics(graphic.getFont());
+        FontMetrics fontMain = getFontMetrics(graphic.getFont());
 
-        graphic.drawString("Score:" + foodEaten, (S_Width - font_me.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
-        
-        //Levels
-        graphic.drawString("Level 1", (S_Width - font_me.stringWidth("Level 1")) / 2, S_Height/2);
+        graphic.drawString("Score:" + foodEaten, (S_Width - fontMain.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
 
-        graphic.drawString("Level 2", (S_Width - font_me.stringWidth("Level 2")) / 2, S_Height/2);
+        graphic.drawString("Level 1", (S_Width - fontMain.stringWidth("Level 1")) / 2, S_Height/2 - (2 * graphic.getFont().getSize()));
+        graphic.drawString("Level 2", (S_Width - fontMain.stringWidth("Level 2")) / 2, S_Height/2);
+        graphic.drawString("Level 3", (S_Width - fontMain.stringWidth("Level 1")) / 2, S_Height/4 +graphic.getFont().getSize());
+        graphic.drawString("Level 4", (S_Width - fontMain.stringWidth("Level 2")) / 2, S_Height/4 - (2 * graphic.getFont().getSize()));
 
 
-        //Game over
+        //Bold
+
         graphic.setFont(new Font("Courier", Font.BOLD, 75));
-        FontMetrics font_me1 = getFontMetrics(graphic.getFont());
-        graphic.drawString("Game Over", (S_Width - font_me1.stringWidth("Game Over")) / 2, S_Height/2);
+        FontMetrics fontBold = getFontMetrics(graphic.getFont());
+
+        graphic.drawString("Game Over", (S_Width - fontBold.stringWidth("Game Over")) / 2, S_Height/6);
 
         }
+
+
+
 
 
     //action listener 
