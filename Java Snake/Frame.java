@@ -1,4 +1,6 @@
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import java.awt.*;
 
 public class  Frame extends JFrame {
     Frame(){
@@ -10,6 +12,7 @@ public class  Frame extends JFrame {
         this.pack();
         this.setVisible(true);
         this.setLocationRelativeTo(null);
-        
+
     }
+    
 }

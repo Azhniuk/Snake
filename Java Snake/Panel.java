@@ -18,44 +18,30 @@ public class Panel extends JPanel implements ActionListener{
     int x, y, x1, y1, x2, y2, DELAY, additional, k;
     char dir = 'R';   // go right
 
-    
 
     static final int G_Size=(S_Width*S_Height)/(Game_unit_size*Game_unit_size);  // dev into squares
     final int 
     x_snake[]=new int[G_Size], 
     y_snake[]=new int[G_Size];      // snake position when the game starts
 
-
     ArrayList<Integer> walls = new ArrayList<Integer>(); // Create an ArrayList for walls
 
 
-   
 
-
-
-
-    Panel(){
+    Panel(){  //create a Panel
         this.setPreferredSize(new Dimension(S_Width,S_Height));
         this.setBackground(Color.lightGray);
         this.setFocusable(true);
         this.addKeyListener(new Keyboard());
         random = new Random();
-        GameStart();
     }
 
 
-    public void gameMenu(Graphics graphic) {    // When ever game started
-        graphic.setColor(Color.black);
-
-        //1
-        graphic.setFont(new Font("Courier", Font.PLAIN, 35));
-        FontMetrics font_me = getFontMetrics(graphic.getFont());
-        graphic.drawString("Score:" + foodEaten, (S_Width - font_me.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
-    }
+    //Easy Classic Medium Expert
 
 
-    //Main constructors
-    public void GameStart() {  //start
+    // MAIN CONSTRUCTORS
+    public void GameStartMedium() {  //start
         DELAY = 100;
         newWallPosition();                           
         newFoodPosition();
@@ -107,7 +93,7 @@ public class Panel extends JPanel implements ActionListener{
             graphic.drawString("Score:"+foodEaten,(S_Width-font_me.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize()); 
         }
         else{
-            gameOver(graphic);
+            gameMenu(graphic);
             
         }
     }
@@ -256,7 +242,7 @@ public class Panel extends JPanel implements ActionListener{
     }
 
 
-    public void gameOver(Graphics graphic) {    // When ever game is over 
+    public void gameMenu(Graphics graphic) {    // When ever game is over 
         graphic.setColor(Color.red);
 
         //1
@@ -298,22 +284,17 @@ public class Panel extends JPanel implements ActionListener{
                     }
                     break;
 
-                case KeyEvent.VK_R :
-                    if(!gameCont){
+                case KeyEvent.VK_SPACE :
+                    if (!gameCont){
                         foodEaten=0;
                         bodylength=2;
                         dir='R';
                         Arrays.fill(x_snake,0);
                         Arrays.fill(y_snake,0);
                         clearArray();
-                        GameStart();
+                        GameStartMedium();
                     }
-                    break;
-
-                case KeyEvent.VK_SPACE :
-                System.out.println("Hello");
                 break;
-
             }            
         }
     }
