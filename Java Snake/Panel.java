@@ -44,9 +44,19 @@ public class Panel extends JPanel implements ActionListener{
     }
 
 
+    public void gameMenu(Graphics graphic) {    // When ever game started
+        graphic.setColor(Color.black);
+
+        //1
+        graphic.setFont(new Font("Courier", Font.PLAIN, 35));
+        FontMetrics font_me = getFontMetrics(graphic.getFont());
+        graphic.drawString("Score:" + foodEaten, (S_Width - font_me.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
+    }
+
+
     //Main constructors
     public void GameStart() {  //start
-        DELAY = 170;
+        DELAY = 100;
         newWallPosition();                           
         newFoodPosition();
         gameCont = true;
@@ -180,7 +190,15 @@ public class Panel extends JPanel implements ActionListener{
             return;
         }
 
-    
+        else if(additional == 4){ //add one vertical
+            x1 = x + Game_unit_size;
+            y1 = y;
+            x2 = x + 2*Game_unit_size;
+            y2 = y;
+            walls.add(x2);
+            walls.add(y2);
+        }
+
         else { //add big one if not delete one
             x1 = x;
             y1 = y + Game_unit_size;
@@ -190,7 +208,6 @@ public class Panel extends JPanel implements ActionListener{
             walls.add(y2);
         }
 
-         
 
         walls.add(x);
         walls.add(y);
@@ -281,17 +298,22 @@ public class Panel extends JPanel implements ActionListener{
                     }
                     break;
 
-                case KeyEvent.VK_R:
-                if(!gameCont){
-                    foodEaten=0;
-                    bodylength=2;
-                    dir='R';
-                    Arrays.fill(x_snake,0);
-                    Arrays.fill(y_snake,0);
-                    clearArray();
-                    GameStart();
-                }
+                case KeyEvent.VK_R :
+                    if(!gameCont){
+                        foodEaten=0;
+                        bodylength=2;
+                        dir='R';
+                        Arrays.fill(x_snake,0);
+                        Arrays.fill(y_snake,0);
+                        clearArray();
+                        GameStart();
+                    }
+                    break;
+
+                case KeyEvent.VK_SPACE :
+                System.out.println("Hello");
                 break;
+
             }            
         }
     }
