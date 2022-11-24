@@ -305,18 +305,36 @@ public class Panel extends JPanel implements ActionListener{
 
         graphic.drawString("Score:" + foodEaten, (S_Width - fontMain.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
 
-        graphic.drawString("Level 1", (S_Width - fontMain.stringWidth("Level 1")) / 2, S_Height/2 - (2 * graphic.getFont().getSize()));
-        graphic.drawString("Level 2", (S_Width - fontMain.stringWidth("Level 2")) / 2, S_Height/2);
-        graphic.drawString("Level 3", (S_Width - fontMain.stringWidth("Level 1")) / 2, S_Height/4 +graphic.getFont().getSize());
-        graphic.drawString("Level 4", (S_Width - fontMain.stringWidth("Level 2")) / 2, S_Height/4 - (2 * graphic.getFont().getSize()));
+        //First column
+        graphic.drawString("Easy",    (S_Width) / 4, S_Height/2);
+        graphic.drawString("Classic", (S_Width) / 4, S_Height/2 + (2 * graphic.getFont().getSize()));
+        graphic.drawString("Medium",  (S_Width) / 4, S_Height/2 + (4 * graphic.getFont().getSize()));
+        graphic.drawString("Expert",  (S_Width) / 4, S_Height/2 + (6 * graphic.getFont().getSize()));
 
+        //Second coloumn
+       
+        graphic.drawString("    1",              (S_Width) / 2, S_Height/2);
+        graphic.drawString("    2",              (S_Width) / 2, S_Height/2 + (2 * graphic.getFont().getSize()));
+        graphic.drawString("    3",              (S_Width) / 2, S_Height/2 + (4 * graphic.getFont().getSize()));
+        graphic.drawString("    4",              (S_Width) / 2, S_Height/2 + (6 * graphic.getFont().getSize()));
 
         //Bold
 
         graphic.setFont(new Font("Courier", Font.BOLD, 75));
         FontMetrics fontBold = getFontMetrics(graphic.getFont());
+        if (firstGame){
+            graphic.drawString("Play", (S_Width - fontBold.stringWidth("Play")) / 2, S_Height/5);
+        }
+        else{
+            graphic.drawString("Game Over", (S_Width - fontBold.stringWidth("Game Over")) / 2, S_Height/5);
+        }
 
-        graphic.drawString("Game Over", (S_Width - fontBold.stringWidth("Game Over")) / 2, S_Height/6);
+
+        
+        graphic.setFont(new Font("Courier", Font.BOLD, 35));
+
+        graphic.drawString("Press Number",   (S_Width) / 2, S_Height/2 - (2 * graphic.getFont().getSize()));
+        graphic.drawString("Level",          (S_Width) / 4, S_Height/2 - (2 * graphic.getFont().getSize()));
 
         }
 
