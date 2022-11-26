@@ -349,7 +349,7 @@ public class Panel extends JPanel implements ActionListener{
             switch (way.getKeyCode()) {
                 //side to move
                 case KeyEvent.VK_LEFT:
-                        dir='L';
+                        dir = 'L';
                     break;
                 case KeyEvent.VK_UP:
                         dir = 'U';
