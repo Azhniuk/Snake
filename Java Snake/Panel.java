@@ -20,7 +20,9 @@ public class Panel extends JPanel implements ActionListener{
 
     static final int G_Size=(S_Width*S_Height)/(Game_unit_size*Game_unit_size);  // dev into squares
     final int 
-    x_snake[]=new int[G_Size], y_snake[]=new int[G_Size];      // snake position when the game starts
+    x_snake[]=new int[G_Size], 
+    y_snake[]=new int[G_Size];      // snake position when the game starts
+
     ArrayList<Integer> walls = new ArrayList<Integer>(); // Create an ArrayList for walls
 
 
@@ -87,7 +89,7 @@ public class Panel extends JPanel implements ActionListener{
 
     public void draw(Graphics graphic) {
         if(gameCont){ 
-            //apple
+            //Apple
             graphic.setColor(Color.red);
             graphic.fillOval(foodX, foodY,Game_unit_size,Game_unit_size);
 
@@ -100,8 +102,7 @@ public class Panel extends JPanel implements ActionListener{
                 }
             }
             
-
-            //snake
+            //Snake
             for(int i=0; i<bodylength; i++){  
                 if(i%2 == 0){    
                     graphic.setColor(new Color(0, 255, 51));
@@ -113,7 +114,6 @@ public class Panel extends JPanel implements ActionListener{
                 }
             }
 
-            
             //Score
             graphic.setColor(Color.black);
             graphic.setFont(new Font("Courier", Font.PLAIN, 35));
@@ -122,7 +122,6 @@ public class Panel extends JPanel implements ActionListener{
         }
         else{
             gameMenu(graphic);
-            
         }
     }
 
