@@ -14,7 +14,7 @@ public class Panel extends JPanel implements ActionListener{
     Random random;
     int foodEaten, foodX, foodY, bodylength;
     boolean gameCont = false, firstGame = true;           //not continue
-    int x, y, x1, y1, x2, y2, delay = 100, additional, level;
+    int x, y, x1, y1, x2, y2, delay = 100, additional, level, speedDisplay = 0;
     char dir = 'R';   // go right
 
 
@@ -36,8 +36,7 @@ public class Panel extends JPanel implements ActionListener{
     }
 
 
-    //Easy1 Classic2 Medium3 Expert4
-    public void GameStartEasy() {  //start 1 Easy
+    public void GameStartClassic() {  //start 1 Classic
         level = 1;
         firstGame = false;
         delay = 140;
@@ -47,18 +46,8 @@ public class Panel extends JPanel implements ActionListener{
         timer.start();
     }
 
-    public void GameStartClassic() {  //start 2 Classic
+    public void GameStartModern() {  //start 2 Modern
         level = 2;
-        firstGame = false;
-        delay = 120;
-        newFoodPosition();
-        gameCont = true;
-        timer = new Timer(delay, this::actionPerformed) ;
-        timer.start();
-    }
-
-    public void GameStartMedium() {  //start 3 Medium
-        level = 3;
         firstGame = false;
         delay = 120;
         newWallPosition();                           
@@ -68,16 +57,7 @@ public class Panel extends JPanel implements ActionListener{
         timer.start();
     }
 
-    public void GameStartExpert() {  //start 4 Expert
-        level = 4;
-        firstGame = false;
-        delay = 110;
-        newWallPosition();
-        newFoodPosition();
-        gameCont = true;
-        timer = new Timer(delay, this);
-        timer.start();
-    }
+   
 
 
 
@@ -121,11 +101,17 @@ public class Panel extends JPanel implements ActionListener{
             graphic.drawString("Score:"+foodEaten,(S_Width-font_me.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize()); 
         }
         else{
-            gameMenu(graphic);
+            if(speedDisplay !=0 ){
+                gameMenu2(graphic);
+            }
+            else{
+                gameMenu1(graphic);
+            }
         }
     }
 
     
+
     //Move
     public void move() {
         for(int i = bodylength; i > 0; i--){
@@ -160,6 +146,7 @@ public class Panel extends JPanel implements ActionListener{
             checkHitWall();
         }
     }
+
 
     public void newWallPosition() {
         x = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
@@ -295,7 +282,8 @@ public class Panel extends JPanel implements ActionListener{
     }
 
 
-    public void gameMenu(Graphics graphic) {
+    public void gameMenu1(Graphics graphic) 
+    {
         graphic.setColor(Color.black);
 
         //Plain
@@ -305,20 +293,16 @@ public class Panel extends JPanel implements ActionListener{
         graphic.drawString("Score:" + foodEaten, (S_Width - fontMain.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
 
         //First column
-        graphic.drawString("Easy",    (S_Width) / 4, S_Height/2);
-        graphic.drawString("Classic", (S_Width) / 4, S_Height/2 + (2 * graphic.getFont().getSize()));
-        graphic.drawString("Medium",  (S_Width) / 4, S_Height/2 + (4 * graphic.getFont().getSize()));
-        graphic.drawString("Expert",  (S_Width) / 4, S_Height/2 + (6 * graphic.getFont().getSize()));
+        graphic.drawString("Classic",    (S_Width) / 4, S_Height/2);
+        graphic.drawString("Modern", (S_Width) / 4, S_Height/2 + (2 * graphic.getFont().getSize()));
+      
 
         //Second coloumn
-       
         graphic.drawString("    1",              (S_Width) / 2, S_Height/2);
         graphic.drawString("    2",              (S_Width) / 2, S_Height/2 + (2 * graphic.getFont().getSize()));
-        graphic.drawString("    3",              (S_Width) / 2, S_Height/2 + (4 * graphic.getFont().getSize()));
-        graphic.drawString("    4",              (S_Width) / 2, S_Height/2 + (6 * graphic.getFont().getSize()));
+      
 
         //Bold
-
         graphic.setFont(new Font("Courier", Font.BOLD, 75));
         FontMetrics fontBold = getFontMetrics(graphic.getFont());
         if (firstGame){
@@ -335,6 +319,17 @@ public class Panel extends JPanel implements ActionListener{
         graphic.drawString("Press Number",   (S_Width) / 2, S_Height/2 - (2 * graphic.getFont().getSize()));
         graphic.drawString("Level",          (S_Width) / 4, S_Height/2 - (2 * graphic.getFont().getSize()));
 
+        }
+
+
+        public void gameMenu2(Graphics graphic) {
+            graphic.setColor(Color.black);
+    
+            //Plain
+            graphic.setFont(new Font("Courier", Font.PLAIN, 35));
+            FontMetrics fontMain = getFontMetrics(graphic.getFont());
+    
+            graphic.drawString("Score:" + foodEaten, (S_Width - fontMain.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
         }
 
 
@@ -365,7 +360,7 @@ public class Panel extends JPanel implements ActionListener{
                     break;
 
 
-                case KeyEvent.VK_1 :   // 1 Easy
+                case KeyEvent.VK_1 :   // 1 Classic
                     if (!gameCont){
                         foodEaten=0;
                         bodylength=2;
@@ -373,44 +368,21 @@ public class Panel extends JPanel implements ActionListener{
                         Arrays.fill(x_snake,0);
                         Arrays.fill(y_snake,0);
                         clearArray();
-                        GameStartEasy();
-                    }
-                    break;
 
-                case KeyEvent.VK_2 :   // 2 Classic
-                    if (!gameCont){
-                        foodEaten=0;
-                        bodylength=2;
-                        dir='R';
-                        Arrays.fill(x_snake,0);
-                        Arrays.fill(y_snake,0);
-                        clearArray();
-                        GameStartClassic();
-                    }
-                    break;
-
-                case KeyEvent.VK_3 :   // 3 Medium
-                    if (!gameCont){
-                        foodEaten=0;
-                        bodylength=2;
-                        dir='R';
-                        Arrays.fill(x_snake,0);
-                        Arrays.fill(y_snake,0);
-                        clearArray();
-                        GameStartMedium();
+                        //GameStartClassic();
                     }
                     break;
 
 
-                case KeyEvent.VK_4 :   // 4 Expert
+                case KeyEvent.VK_2 :   // 2 Modern
                     if (!gameCont){
-                        foodEaten=0;
                         bodylength=2;
                         dir='R';
                         Arrays.fill(x_snake,0);
                         Arrays.fill(y_snake,0);
                         clearArray();
-                        GameStartExpert();
+
+                        GameStartModern();
                     }
                     break;
             }            
