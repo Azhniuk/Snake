@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+//import java.lang.ProcessBuilder.Redirect;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ public class Panel extends JPanel implements ActionListener{
     boolean gameCont = false, firstGame = true, menu1 = true;           //not continue
     int x, y, x1, y1, x2, y2, delay = 100, additional, level, speedDisplay = 0;
     char dir = 'R';   // go right
+
+    String colFirst = "Classic";
 
 
     static final int G_Size=(S_Width*S_Height)/(Game_unit_size*Game_unit_size);  // dev into squares
@@ -65,6 +68,7 @@ public class Panel extends JPanel implements ActionListener{
     public void paintComponent(Graphics graphic) {  //Call draw
         super.paintComponent(graphic);
         draw(graphic);
+
     }
 
     public void draw(Graphics graphic) {
@@ -283,27 +287,13 @@ public class Panel extends JPanel implements ActionListener{
 
     public void gameMenu1(Graphics graphic) 
     {
-        graphic.setColor(Color.black);
+        graphic.setColor(Color.black);      
 
-        //Plain
-        graphic.setFont(new Font("Courier", Font.PLAIN, 35));
-        FontMetrics fontMain = getFontMetrics(graphic.getFont());
-
-        graphic.drawString("Score:" + foodEaten, (S_Width - fontMain.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
-
-        //First column
-        graphic.drawString("Classic",    (S_Width) / 4, S_Height/2);
-        graphic.drawString("Modern", (S_Width) / 4, S_Height/2 + (2 * graphic.getFont().getSize()));
-      
-
-        //Second coloumn
-        graphic.drawString("    1",              (S_Width) / 2, S_Height/2);
-        graphic.drawString("    2",              (S_Width) / 2, S_Height/2 + (2 * graphic.getFont().getSize()));
-      
-
-        //Bold
+        //Bold Main
         graphic.setFont(new Font("Courier", Font.BOLD, 75));
         FontMetrics fontBold = getFontMetrics(graphic.getFont());
+
+        //First Game
         if (firstGame){
             graphic.drawString("Play", (S_Width - fontBold.stringWidth("Play")) / 2, S_Height/5);
         }
@@ -311,14 +301,43 @@ public class Panel extends JPanel implements ActionListener{
             graphic.drawString("Game Over", (S_Width - fontBold.stringWidth("Game Over")) / 2, S_Height/5);
         }
 
+
+         //Plain
+        graphic.setFont(new Font("Courier", Font.PLAIN, 35));
+        FontMetrics fontMain = getFontMetrics(graphic.getFont());
+
+        graphic.drawString("Score:" + foodEaten, (S_Width - fontMain.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
+    
+
         //FirstMenu
-        if(!menu1){
+        if(menu1){
+        //First column
+        colFirst = "Classic";
+        graphic.drawString("Modern", (S_Width) / 4, S_Height/2 + (2 * graphic.getFont().getSize()));
+
+        //Second coloumn
+        graphic.drawString("    1",              (S_Width) / 2, S_Height/2);
+        graphic.drawString("    2",              (S_Width) / 2, S_Height/2 + (2 * graphic.getFont().getSize()));
+        }
+
+        else{
+            //First column
+            colFirst = "HELLO";
+
+            //graphic.drawString("Static",    (S_Width) / 4, S_Height/2);
+            graphic.drawString("Dynamic", (S_Width) / 4, S_Height/2 + (2 * graphic.getFont().getSize()));
+
+            //Second coloumn
+            graphic.drawString("    1",              (S_Width) / 2, S_Height/2);
+            graphic.drawString("    2",              (S_Width) / 2, S_Height/2 + (2 * graphic.getFont().getSize()));
+            
             System.out.println("HELLO");
             graphic.setColor(Color.black);
             graphic.setFont(new Font("Courier", Font.PLAIN, 35));
             graphic.drawString("Speed", (S_Width) / 4, S_Height/2 + (2 * graphic.getFont().getSize()));
-
         }
+
+        graphic.drawString(colFirst,    (S_Width) / 4, S_Height/2);
 
 
         
@@ -326,9 +345,10 @@ public class Panel extends JPanel implements ActionListener{
 
         graphic.drawString("Press Number",   (S_Width) / 2, S_Height/2 - (2 * graphic.getFont().getSize()));
         graphic.drawString("Level",          (S_Width) / 4, S_Height/2 - (2 * graphic.getFont().getSize()));
-        
 
         }
+
+        
 
 
     public void gameMenu2(Graphics graphic) {
