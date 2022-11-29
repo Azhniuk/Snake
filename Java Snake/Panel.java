@@ -13,7 +13,7 @@ public class Panel extends JPanel implements ActionListener{
     Timer timer;
     Random random;
     int foodEaten, foodX, foodY, bodylength;
-    boolean gameCont = false, firstGame = true;           //not continue
+    boolean gameCont = false, firstGame = true, menu1 = true;           //not continue
     int x, y, x1, y1, x2, y2, delay = 100, additional, level, speedDisplay = 0;
     char dir = 'R';   // go right
 
@@ -101,14 +101,13 @@ public class Panel extends JPanel implements ActionListener{
             graphic.drawString("Score:"+foodEaten,(S_Width-font_me.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize()); 
         }
         else{
-            if(speedDisplay !=0 ){
-                gameMenu2(graphic);
-            }
-            else{
-                gameMenu1(graphic);
-            }
+            gameMenu1(graphic);
         }
-    }
+
+        }
+
+    
+  
 
     
 
@@ -312,17 +311,27 @@ public class Panel extends JPanel implements ActionListener{
             graphic.drawString("Game Over", (S_Width - fontBold.stringWidth("Game Over")) / 2, S_Height/5);
         }
 
+        //FirstMenu
+        if(!menu1){
+            System.out.println("HELLO");
+            graphic.setColor(Color.black);
+            graphic.setFont(new Font("Courier", Font.PLAIN, 35));
+            graphic.drawString("Speed", (S_Width) / 4, S_Height/2 + (2 * graphic.getFont().getSize()));
+
+        }
+
 
         
         graphic.setFont(new Font("Courier", Font.BOLD, 35));
 
         graphic.drawString("Press Number",   (S_Width) / 2, S_Height/2 - (2 * graphic.getFont().getSize()));
         graphic.drawString("Level",          (S_Width) / 4, S_Height/2 - (2 * graphic.getFont().getSize()));
+        
 
         }
 
 
-        public void gameMenu2(Graphics graphic) {
+    public void gameMenu2(Graphics graphic) {
             graphic.setColor(Color.black);
     
             //Plain
@@ -330,8 +339,15 @@ public class Panel extends JPanel implements ActionListener{
             FontMetrics fontMain = getFontMetrics(graphic.getFont());
     
             graphic.drawString("Score:" + foodEaten, (S_Width - fontMain.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
+
+            graphic.drawString("Press Number",   (S_Width) / 2, S_Height/2 - (2 * graphic.getFont().getSize()));
+            graphic.drawString("Level",          (S_Width) / 4, S_Height/2 - (2 * graphic.getFont().getSize()));
+
         }
 
+
+
+    
 
 
 
@@ -368,8 +384,9 @@ public class Panel extends JPanel implements ActionListener{
                         Arrays.fill(x_snake,0);
                         Arrays.fill(y_snake,0);
                         clearArray();
-
-                        //GameStartClassic();
+                        menu1 = false;
+                        draw(getGraphics());
+                  //GameStartClassic();
                     }
                     break;
 
