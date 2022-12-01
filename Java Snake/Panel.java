@@ -18,10 +18,12 @@ public class Panel extends JPanel implements ActionListener{
     int x, y, x1, y1, x2, y2, delay = 100, additional, level, speedDisplay = 0;
     char dir = 'R';   // go right
 
-    String  col1Heading = "Level",
-            col1First = "Classic",
-            col1Second = "Extended";
-
+    String  col1Heading = "Speed",
+            col1First = "Static",
+            col1Second = "Dynamic";  
+    
+    
+    
 
 
     static final int G_Size=(S_Width*S_Height)/(Game_unit_size*Game_unit_size);  // dev into squares
@@ -43,6 +45,7 @@ public class Panel extends JPanel implements ActionListener{
 
 
     public void GameStartClassic() {  //start 1 Classic
+        foodEaten = 0;
         level = 1;
         firstGame = false;
         delay = 140;
@@ -52,7 +55,8 @@ public class Panel extends JPanel implements ActionListener{
         timer.start();
     }
 
-    public void GameStartModern() {  //start 2 Modern
+    public void GameStartExtended() {  //start 2 Extended
+        foodEaten = 0;
         level = 2;
         firstGame = false;
         delay = 120;
@@ -110,14 +114,10 @@ public class Panel extends JPanel implements ActionListener{
         else{
             gameMenu(graphic);
         }
-
         }
 
     
   
-
-    
-
     //Move
     public void move() {
         for(int i = bodylength; i > 0; i--){
@@ -145,12 +145,12 @@ public class Panel extends JPanel implements ActionListener{
     public void newFoodPosition() {
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
-        if (level == 2) {
+        if (speed) {
             setInterval(delay);
         }
-        else if(level > 2){
-            checkHitWall();
-        }
+        /*else if(level == 2){
+            checkFoodHitWall();
+        }*/
     }
 
 
@@ -203,21 +203,18 @@ public class Panel extends JPanel implements ActionListener{
 
     public void setInterval(int delay) {
         if (gameCont){
-            if(level ==4){
                 delay = delay /2;
-            }
-            else{
-                delay = delay * (10 - level) / 10;
-            }
+          
             timer.setDelay(delay);
         }
 
     }
 
-// clear const
+// clear 
     public void clearArray(){
         walls.removeAll(walls);        
     }
+
     public void clearWalls(){
         int index = walls.size() - 1;
         
@@ -236,10 +233,10 @@ public class Panel extends JPanel implements ActionListener{
             bodylength++;
             foodEaten++;
             newFoodPosition();
-            if (level > 2){
+
+           if(level == 2){
                 newWallPosition();
             }
-
         }
     }
 
@@ -248,45 +245,66 @@ public class Panel extends JPanel implements ActionListener{
         // if snake bite itself and if it collides with walls
         for (int i = bodylength; i > 0; i--)
             {if((x_snake[0]==x_snake[i])&&(y_snake[0]==y_snake[i]))
-                {gameCont=false;}}
+                {
+                    menu1 = true;
+                    gameCont=false;}}
         if(x_snake[0]<0)
-            {gameCont = false;}
+            {
+                gameOver();
+            }
         if(x_snake[0]>S_Width)
-           { gameCont = false;}
+           { 
+            gameOver();
+        }
         if (y_snake[0] < 0) 
-        {    gameCont = false;}
+        {    
+            gameOver();
+        }
         if (y_snake[0] > S_Height) 
-        {    gameCont = false;}
+        {
+            gameOver();
+        }
 
 
-        if(level > 2) {
-            //if it hits walls
+        if(level == 2) {
+            //if snake hits walls
             for (int i = 0; i <= walls.size(); i = i + 2) {
                 if ((x_snake[0] == walls.get(i)) && (y_snake[0] == walls.get(i + 1))) {
-                    gameCont = false;
+                    gameOver();
                 }
                 if (i == walls.size() - 2) {
                     break;
                 }
             }
+
+            //if food in wall
+            for (int i = 0; i < walls.size() - 1; i = i + 2){
+                if (foodX == walls.get(i) && foodY == walls.get(i + 1)){
+                    newFoodPosition();
+                }
+                else{
+                    break;
+                }
+            }
         }
-        
-        if(!gameCont)
-          {  timer.stop();
+
+        if(!gameCont){                   
+            timer.stop();
         }
     }
 
-    public void checkHitWall(){
+   /*  public void checkFoodHitWall(){
         for (int i = 0; i < walls.size() - 1; i = i + 2){
             if (foodX == walls.get(i) && foodY == walls.get(i + 1)){
                 newFoodPosition();
             }
             else{
+                menu1 = true;
                 break;
             }
         }
     }
-
+*/
 
     public void gameMenu(Graphics graphic) 
     {
@@ -333,6 +351,17 @@ public class Panel extends JPanel implements ActionListener{
 
         }
 
+    public void gameOver(){
+        menu1 = true;
+        col1Heading = "Speed";
+        col1First = "Static";
+        col1Second = "Dynamic";  
+    
+
+        gameCont = false;
+    }
+
+
 
 
 
@@ -365,7 +394,31 @@ public class Panel extends JPanel implements ActionListener{
                 case KeyEvent.VK_1 :   // 1 Classic
                     if (!gameCont){
                         if(menu1){
-                            foodEaten=0;
+                            bodylength=2;
+                            dir='R';
+                            Arrays.fill(x_snake,0);
+                            Arrays.fill(y_snake,0);
+                            clearArray();
+                            
+                            menu1 = false;
+    
+                            //menu change
+                            col1Heading = "Level";
+                            col1First = "Classic";
+                            col1Second = "Extended";
+                            speed = false;
+                            gameMenu(getGraphics());                          
+                        }
+                        else{
+                            GameStartClassic();                            
+                        }
+                    }
+                    break;
+
+
+                case KeyEvent.VK_2 :   // 2 Extended
+                    if (!gameCont){
+                        if(menu1){
                             bodylength=2;
                             dir='R';
                             Arrays.fill(x_snake,0);
@@ -374,39 +427,16 @@ public class Panel extends JPanel implements ActionListener{
                             menu1 = false;
     
                             //menu change
-                            col1Heading = "Speed";
-                            col1First = "Static";
-                            col1Second = "Dynamic";  
-                            
-                            gameMenu(getGraphics());
-                        }
-                        else{
-                            GameStartClassic();
-                        }
-
-                       
-                        
-                    }
-                    break;
-
-
-                case KeyEvent.VK_2 :   // 2 Modern
-                    if (!gameCont){
-                        if(menu1){
-                            bodylength=2;
-                            dir='R';
-                            Arrays.fill(x_snake,0);
-                            Arrays.fill(y_snake,0);
-                            clearArray();
+                            col1Heading = "Level";
+                            col1First = "Classic";
+                            col1Second = "Extended";
+                            speed = true;
+                            gameMenu(getGraphics()); 
 
                         }
                         else{
-
+                            GameStartExtended();
                         }
-
-                       
-
-                        GameStartModern();
                     }
                     break;
             }            
@@ -421,6 +451,7 @@ public class Panel extends JPanel implements ActionListener{
             checkHit();
         }
         else{
+
             gameMenu(getGraphics());
         }
         repaint();
