@@ -13,7 +13,7 @@ public class Panel extends JPanel implements ActionListener{
 
     Timer timer;
     Random random;
-    int foodEaten, foodX, foodY, bodylength;
+    int foodEaten, foodX, foodY, bodylength, speedShown = 0;
     boolean gameCont = false, firstGame = true, menu1 = true, speed;           //not continue
     int x, y, x1, y1, x2, y2, delay = 100, additional, level, speedDisplay = 0;
     char dir = 'R';   // go right
@@ -22,9 +22,6 @@ public class Panel extends JPanel implements ActionListener{
             col1First = "Static",
             col1Second = "Dynamic";  
     
-    
-    
-
 
     static final int G_Size=(S_Width*S_Height)/(Game_unit_size*Game_unit_size);  // dev into squares
     final int 
@@ -45,10 +42,11 @@ public class Panel extends JPanel implements ActionListener{
 
 
     public void GameStartClassic() {  //start 1 Classic
+        speedShown = 0;
         foodEaten = 0;
         level = 1;
-        firstGame = false;
         delay = 140;
+
         newFoodPosition();
         gameCont = true;
         timer = new Timer(delay, this::actionPerformed) ;
@@ -56,10 +54,11 @@ public class Panel extends JPanel implements ActionListener{
     }
 
     public void GameStartExtended() {  //start 2 Extended
+        speedShown = 0;
         foodEaten = 0;
         level = 2;
-        firstGame = false;
-        delay = 120;
+        delay = 140;
+
         newWallPosition();                           
         newFoodPosition();
         gameCont = true;
@@ -68,8 +67,6 @@ public class Panel extends JPanel implements ActionListener{
     }
 
    
-
-
 
     //GRAPHICS
     public void paintComponent(Graphics graphic) {  //Call draw
@@ -108,8 +105,12 @@ public class Panel extends JPanel implements ActionListener{
             //Score
             graphic.setColor(Color.black);
             graphic.setFont(new Font("Courier", Font.PLAIN, 35));
-            FontMetrics font_me=getFontMetrics(graphic.getFont());
-            graphic.drawString("Score:"+foodEaten,(S_Width-font_me.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize()); 
+            FontMetrics font=getFontMetrics(graphic.getFont());
+            graphic.drawString("Score:"+foodEaten,(S_Width-font.stringWidth("Score:"+foodEaten))/2,graphic.getFont().getSize()); 
+
+             //Speed
+             graphic.setFont(new Font("Courier", Font.PLAIN, 25));
+             graphic.drawString("Speed:" + speedShown, (S_Width)/2 - 65, graphic.getFont().getSize() + 35); 
         }
         else{
             gameMenu(graphic);
@@ -146,11 +147,9 @@ public class Panel extends JPanel implements ActionListener{
         foodX=random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         foodY=random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
         if (speed) {
-            setInterval(delay);
+            delay = setInterval(delay);
+            speedShown +=1;
         }
-        /*else if(level == 2){
-            checkFoodHitWall();
-        }*/
     }
 
 
@@ -158,7 +157,7 @@ public class Panel extends JPanel implements ActionListener{
         x = random.nextInt((int)(S_Width/Game_unit_size))*Game_unit_size;
         y = random.nextInt((int)(S_Height/Game_unit_size))*Game_unit_size;
 
-        additional = random.nextInt(1, 5);
+        additional = random.nextInt(1, 6);
 
         if(additional == 1){  //add one horisontal
             x1 = x + Game_unit_size;
@@ -182,6 +181,14 @@ public class Panel extends JPanel implements ActionListener{
             walls.add(x2);
             walls.add(y2);
         }
+        else if(additional == 5){ //add one horisontal
+            x1 = x ;
+            y1 = y + Game_unit_size;
+            x2 = x ;
+            y2 = y + 2*Game_unit_size;
+            walls.add(x2);
+            walls.add(y2);
+        }
 
         else { //add big one if not delete one
             x1 = x;
@@ -200,14 +207,12 @@ public class Panel extends JPanel implements ActionListener{
     }
 
 
-
-    public void setInterval(int delay) {
+    public int setInterval(int a) {
         if (gameCont){
-                delay = delay /2;
-          
-            timer.setDelay(delay);
+            a = a *9 / 10;  
+            timer.setDelay(a);
         }
-
+        return a;
     }
 
 // clear 
@@ -224,9 +229,7 @@ public class Panel extends JPanel implements ActionListener{
         walls.remove(index - 3);  
               
     }
-
-
-    
+ 
 
     public void food_EatenOrNot() {     // for checking the food has been eaten by snake or not
         if((x_snake[0]==foodX)&&(y_snake[0]==foodY)){
@@ -234,9 +237,11 @@ public class Panel extends JPanel implements ActionListener{
             foodEaten++;
             newFoodPosition();
 
-           if(level == 2){
-                newWallPosition();
-            }
+        if(level == 2){
+            newWallPosition();
+        }
+
+        checkFoodPosition();
         }
     }
 
@@ -276,16 +281,6 @@ public class Panel extends JPanel implements ActionListener{
                     break;
                 }
             }
-
-            //if food in wall
-            for (int i = 0; i < walls.size() - 1; i = i + 2){
-                if (foodX == walls.get(i) && foodY == walls.get(i + 1)){
-                    newFoodPosition();
-                }
-                else{
-                    break;
-                }
-            }
         }
 
         if(!gameCont){                   
@@ -293,18 +288,18 @@ public class Panel extends JPanel implements ActionListener{
         }
     }
 
-   /*  public void checkFoodHitWall(){
-        for (int i = 0; i < walls.size() - 1; i = i + 2){
+    public void checkFoodPosition(){
+         //if food in wall
+         for (int i = 0; i < walls.size() - 1; i = i + 2){
             if (foodX == walls.get(i) && foodY == walls.get(i + 1)){
                 newFoodPosition();
             }
             else{
-                menu1 = true;
                 break;
             }
         }
     }
-*/
+
 
     public void gameMenu(Graphics graphic) 
     {
@@ -320,10 +315,10 @@ public class Panel extends JPanel implements ActionListener{
 
         //First Game
         if (firstGame){
-            graphic.drawString("Play", (S_Width - fontBold.stringWidth("Play")) / 2, S_Height/5);
+            graphic.drawString("Play", (S_Width - fontBold.stringWidth("Play")) / 2, S_Height/5 + 15);
         }
         else{
-            graphic.drawString("Game Over", (S_Width - fontBold.stringWidth("Game Over")) / 2, S_Height/5);
+            graphic.drawString("Game Over", (S_Width - fontBold.stringWidth("Game Over")) / 2, S_Height/5 + 15);
         }
 
 
@@ -332,8 +327,7 @@ public class Panel extends JPanel implements ActionListener{
         FontMetrics fontMain = getFontMetrics(graphic.getFont());
 
         graphic.drawString("Score:" + foodEaten, (S_Width - fontMain.stringWidth("Score:" + foodEaten)) / 2, graphic.getFont().getSize());
-    
-
+        
         graphic.drawString("    1",              (S_Width) / 2, S_Height/2);
         graphic.drawString("    2",              (S_Width) / 2, S_Height/2 + (2 * graphic.getFont().getSize()));
 
@@ -349,6 +343,10 @@ public class Panel extends JPanel implements ActionListener{
         graphic.drawString("Press Number",   (S_Width) / 2, S_Height/2 - (2 * graphic.getFont().getSize()));
         graphic.drawString(col1Heading,          (S_Width) / 4, S_Height/2 - (2 * graphic.getFont().getSize()));
 
+        graphic.setFont(new Font("Courier", Font.PLAIN, 25));
+        graphic.drawString("Speed:" + speedShown, (S_Width)/2 - 65, graphic.getFont().getSize() + 35); 
+    
+
         }
 
     public void gameOver(){
@@ -356,14 +354,11 @@ public class Panel extends JPanel implements ActionListener{
         col1Heading = "Speed";
         col1First = "Static";
         col1Second = "Dynamic";  
-    
+
+        firstGame = false;    
 
         gameCont = false;
     }
-
-
-
-
 
 
 
@@ -374,10 +369,14 @@ public class Panel extends JPanel implements ActionListener{
             switch (way.getKeyCode()) {
                 //side to move
                 case KeyEvent.VK_LEFT:
+                if (dir != 'R') {
                         dir = 'L';
+                }
                     break;
                 case KeyEvent.VK_UP:
-                        dir = 'U';
+                if (dir != 'D') {
+                    dir = 'U';
+                }
                     break;
                 case KeyEvent.VK_RIGHT:
                     if (dir != 'L') {
