@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.ArrayList;
@@ -71,8 +72,8 @@ public class Panel extends JPanel implements ActionListener{
     public void paintComponent(Graphics graphic) {  //Call draw
         super.paintComponent(graphic);
         draw(graphic);
-
     }
+
 
     public void draw(Graphics graphic) {
         if(gameCont){ 
@@ -111,6 +112,7 @@ public class Panel extends JPanel implements ActionListener{
              graphic.setFont(new Font("Courier", Font.PLAIN, 25));
              graphic.drawString("Speed:" + speedShown, (S_Width)/2 - 65, graphic.getFont().getSize() + 35); 
         }
+
         else{
             gameMenu(graphic);
         }
@@ -238,9 +240,8 @@ public class Panel extends JPanel implements ActionListener{
 
         if(level == 2){
             newWallPosition();
+            checkFoodPosition();
         }
-
-        checkFoodPosition();
         }
     }
 
@@ -250,8 +251,7 @@ public class Panel extends JPanel implements ActionListener{
         for (int i = bodylength; i > 0; i--)
             {if((x_snake[0]==x_snake[i])&&(y_snake[0]==y_snake[i]))
                 {
-                    menu1 = true;
-                    gameCont=false;}}
+                    gameOver();}}
         if(x_snake[0]<0)
             {
                 gameOver();
@@ -302,7 +302,6 @@ public class Panel extends JPanel implements ActionListener{
 
     public void gameMenu(Graphics graphic) 
     {
-        //Clear
         graphic.setColor(Color.lightGray);      
         graphic.fillRect(200,200,600, 400);
 
@@ -358,6 +357,12 @@ public class Panel extends JPanel implements ActionListener{
 
         gameCont = false;
     }
+
+
+
+
+
+
 
 
 
@@ -428,6 +433,7 @@ public class Panel extends JPanel implements ActionListener{
                             col1Heading = "Level";
                             col1First = "Classic";
                             col1Second = "Extended";
+
                             speed = true;
                             gameMenu(getGraphics()); 
 
@@ -449,7 +455,6 @@ public class Panel extends JPanel implements ActionListener{
             checkHit();
         }
         else{
-
             gameMenu(getGraphics());
         }
         repaint();
